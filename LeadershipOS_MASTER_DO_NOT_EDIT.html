@@ -11836,12 +11836,16 @@
                 garshuNotifications: appData.garshuNotifications,
                 settings: appData.settings,
                 braindump: localStorage.getItem('leadership_os_braindump') || '',
-                attendanceHistory: getAttendanceHistory()
+                attendanceHistory: getAttendanceHistory(),
+                snoozedTasks: JSON.parse(localStorage.getItem('leadership_os_snoozed') || '[]'),
+                emailGuide: localStorage.getItem('leadership_os_email_guide') || ''
             };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+            const now = new Date();
+            const dateStr = now.toISOString().split('T')[0];
             const downloadAnchorNode = document.createElement('a');
             downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "leadership_os_backup.json");
+            downloadAnchorNode.setAttribute("download", `leadership_os_backup_${dateStr}.json`);
             document.body.appendChild(downloadAnchorNode);
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
@@ -11918,13 +11922,26 @@
                         localStorage.setItem('leadership_os_attendance_history', JSON.stringify(data.attendanceHistory));
                     }
 
-                    // 6. Update Meta
+                    // 6. Restore Snoozed Tasks (localStorage)
+                    if (data.snoozedTasks) {
+                        localStorage.setItem('leadership_os_snoozed', JSON.stringify(data.snoozedTasks));
+                        if (typeof updateSnoozeButton === 'function') {
+                            updateSnoozeButton(); // Refresh the badge
+                        }
+                    }
+
+                    // 7. Restore Email Guide Template (localStorage)
+                    if (data.emailGuide !== undefined) {
+                        localStorage.setItem('leadership_os_email_guide', data.emailGuide);
+                    }
+
+                    // 8. Update Meta
                     if (data.meta) appData.meta = data.meta;
 
-                    // 7. Save all changes to LocalStorage
+                    // 9. Save all changes to LocalStorage
                     saveData();
 
-                    // 8. Re-render all relevant UI components
+                    // 10. Re-render all relevant UI components
                     if (typeof renderHubView === 'function') renderHubView();
                     if (typeof renderPulseView === 'function') renderPulseView();
                     if (typeof applyAccountColors === 'function') applyAccountColors();
