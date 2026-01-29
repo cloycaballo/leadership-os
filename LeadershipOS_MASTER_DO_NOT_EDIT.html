@@ -16,6 +16,17 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase Client
+        const SUPABASE_URL = 'https://gesxrlyplcotlubhuvri.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdlc3hybHlwbGNvdGx1Ymh1dnJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MjIyMjQsImV4cCI6MjA4MzI5ODIyNH0.yNzfleskGUDBH4rGjBiR-9fY4VLDFYX-ru6zKQIRGxI';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+    
     <!-- MERGED TAILWIND CONFIGURATION -->
     <script>
         tailwind.config = {
@@ -4755,8 +4766,8 @@
                             </div>
 
                             <!-- Search -->
-                            <div class="md:col-span-2 lg:flex-1 lg:max-w-sm ml-auto">
-                                <div class="relative group">
+                            <div class="md:col-span-2 lg:flex-1 lg:max-w-sm ml-auto flex items-center gap-3">
+                                <div class="relative group flex-1">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors"
                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -4772,6 +4783,11 @@
                                         ✕
                                     </button>
                                 </div>
+                                <button onclick="openClientSyncModal()" 
+                                    class="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-700 transition-all shadow-sm whitespace-nowrap">
+                                    <i data-lucide="share-2" class="w-4 h-4"></i>
+                                    Client Sync
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -6392,13 +6408,19 @@
         <div id="broadcastTrackModal"
             class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
             <div class="modal-overlay absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
-            <div class="modal-container bg-white border border-slate-200 w-11/12 md:max-w-lg mx-auto rounded-2xl shadow-2xl z-50 overflow-y-auto"
+            <div class="modal-container bg-white border border-slate-200 w-11/12 md:max-w-4xl mx-auto rounded-2xl shadow-2xl z-50 overflow-y-auto"
                 style="max-height: 90vh;">
                 <div class="modal-content py-6 text-left px-8">
                     <div class="flex justify-between items-start pb-3 mb-4 border-b">
-                        <div>
+                        <div class="flex-1">
                             <p class="text-2xl font-bold text-slate-800" id="broadcastTrackTitle">Track Update</p>
-                            <p class="text-sm text-slate-500" id="broadcastTrackProgress">0/0 Acknowledged</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <p class="text-sm font-semibold text-slate-700" id="broadcastTrackProgress">0/0 Acknowledged</p>
+                                <span class="text-sm text-slate-500" id="broadcastTrackPercentage">(0%)</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full mt-2">
+                                <div id="broadcastTrackProgressBar" class="bg-hub-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
                         </div>
                         <div class="modal-close cursor-pointer" onclick="toggleModal('broadcastTrackModal')">
                             <svg class="fill-current text-slate-500 hover:text-slate-800"
@@ -6409,29 +6431,73 @@
                         </div>
                     </div>
                     <input type="hidden" id="broadcastTrackId">
+                    <input type="hidden" id="broadcastTrackFilter" value="all">
+                    <input type="hidden" id="broadcastTrackSort" value="name-asc">
 
-                    <div class="relative mb-2">
+                    <div class="relative mb-4">
                         <input type="text" id="broadcastSearchInput"
                             oninput="openBroadcastTrackModal(document.getElementById('broadcastTrackId').value)"
                             placeholder="Search team..."
-                            class="w-full pl-8 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-hub-500 focus:border-hub-500">
+                            class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-hub-500 focus:border-hub-500">
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none"
+                            class="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
 
-                    <div class="space-y-2 max-h-64 overflow-y-auto pr-2" id="broadcastTmChecklist"></div>
+                    <!-- Filter and Sort Controls -->
+                    <div class="flex flex-wrap gap-3 mb-4 items-center justify-between">
+                        <div class="flex gap-2">
+                            <button type="button" onclick="setBroadcastTrackFilter('all')" 
+                                class="broadcast-filter-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all border-2 border-slate-300 bg-slate-50 text-slate-700"
+                                data-filter="all">
+                                All
+                            </button>
+                            <button type="button" onclick="setBroadcastTrackFilter('acknowledged')" 
+                                class="broadcast-filter-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all border-2 border-transparent bg-white text-slate-600 hover:bg-slate-50"
+                                data-filter="acknowledged">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Acknowledged
+                                </span>
+                            </button>
+                            <button type="button" onclick="setBroadcastTrackFilter('pending')" 
+                                class="broadcast-filter-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all border-2 border-transparent bg-white text-slate-600 hover:bg-slate-50"
+                                data-filter="pending">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Pending
+                                </span>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-slate-600">Sort:</label>
+                            <select id="broadcastTrackSortSelect" onchange="setBroadcastTrackSort(this.value)"
+                                class="text-sm border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-hub-500 focus:border-hub-500">
+                                <option value="name-asc">Name (A-Z)</option>
+                                <option value="name-desc">Name (Z-A)</option>
+                                <option value="status-ack">Acknowledged First</option>
+                                <option value="status-pending">Pending First</option>
+                                <option value="account">By Account</option>
+                            </select>
+                        </div>
+                    </div>
 
-                    <div class="flex justify-between items-center mt-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[32rem] overflow-y-auto pr-2" id="broadcastTmChecklist"></div>
+
+                    <div class="flex justify-between items-center mt-6 pt-4 border-t">
                         <button type="button" onclick="markAllBroadcastAck()"
-                            class="bg-green-100 text-green-700 hover:bg-green-200 text-sm font-bold py-3 px-4 rounded-lg">
+                            class="bg-green-100 text-green-700 hover:bg-green-200 text-sm font-bold py-3 px-4 rounded-lg transition-all">
                             Mark All Acknowledged
                         </button>
                         <button type="button" onclick="toggleModal('broadcastTrackModal')"
-                            class="bg-hub-600 hover:bg-hub-700 text-white font-bold py-3 px-6 rounded-lg shadow-md">
+                            class="bg-hub-600 hover:bg-hub-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all">
                             Done
                         </button>
                     </div>
@@ -8253,38 +8319,50 @@
         // ==========================================
 
         // ==========================================
-        // SECURITY / GATEKEEPER AUTH LOGIC
+        // SECURITY / GATEKEEPER AUTH LOGIC (Supabase)
         // ==========================================
-        const AUTH_ENDPOINT = "https://script.google.com/macros/s/AKfycbz17JTSJoTj-BfBJVTlAHp1fERg8CN4KLv9TVLR-tmTIhWjjQ774Q1k1C4zlLUm2yz4LA/exec";
-
-        function checkAuthStatus() {
-            const session = localStorage.getItem('leadership_os_session');
+        
+        async function checkAuthStatus() {
             const screen = document.getElementById('loginScreen');
             const loadingState = document.getElementById('auth-loading-state');
             const formContainer = document.getElementById('auth-form-container');
 
-            if (session === 'valid') {
-                // Scenario A: Logged In
-                // 1. Ensure loading state is visible
-                if (loadingState) loadingState.style.display = 'flex';
-                if (formContainer) formContainer.style.display = 'none';
+            try {
+                // Check if user has an active Supabase session
+                const { data: { session } } = await supabaseClient.auth.getSession();
 
-                // 2. Wait, then fade out
-                setTimeout(() => {
+                if (session) {
+                    // Scenario A: Logged In
+                    // 1. Ensure loading state is visible
+                    if (loadingState) loadingState.style.display = 'flex';
+                    if (formContainer) formContainer.style.display = 'none';
+
+                    // 2. Wait, then fade out
+                    setTimeout(() => {
+                        if (screen) {
+                            screen.style.opacity = '0';
+                            setTimeout(() => {
+                                screen.style.display = 'none';
+                            }, 500); // Match CSS transition duration
+                        }
+                    }, 800); // Splash duration
+                } else {
+                    // Scenario B: Not Logged In
+                    // 1. Hide loading state
+                    if (loadingState) loadingState.style.display = 'none';
+                    // 2. Show form
+                    if (formContainer) formContainer.style.display = 'block';
+                    // 3. Ensure screen is visible
                     if (screen) {
-                        screen.style.opacity = '0';
-                        setTimeout(() => {
-                            screen.style.display = 'none';
-                        }, 500); // Match CSS transition duration
+                        screen.style.display = 'flex';
+                        screen.style.opacity = '1';
                     }
-                }, 800); // Splash duration
-            } else {
-                // Scenario B: Not Logged In
-                // 1. Hide loading state
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                // Show login form on error
                 if (loadingState) loadingState.style.display = 'none';
-                // 2. Show form
                 if (formContainer) formContainer.style.display = 'block';
-                // 3. Ensure screen is visible
                 if (screen) {
                     screen.style.display = 'flex';
                     screen.style.opacity = '1';
@@ -8318,12 +8396,16 @@
             if (card) card.classList.remove('shake');
 
             try {
-                const response = await fetch(`${AUTH_ENDPOINT}?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
-                const data = await response.json();
+                // Sign in with Supabase
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
 
-                if (data.allowed) {
+                if (error) throw error;
+
+                if (data.session) {
                     // Success
-                    localStorage.setItem('leadership_os_session', 'valid');
                     const screen = document.getElementById('loginScreen');
                     screen.style.opacity = '0';
 
@@ -8336,6 +8418,7 @@
                 }
             } catch (err) {
                 // Failure
+                console.error('Login error:', err);
                 if (card) {
                     card.classList.add('shake');
                     setTimeout(() => card.classList.remove('shake'), 500);
@@ -8346,8 +8429,8 @@
             }
         }
 
-        function lockApp() {
-            localStorage.removeItem('leadership_os_session');
+        async function lockApp() {
+            await supabaseClient.auth.signOut();
             location.reload();
         }
 
@@ -11955,6 +12038,233 @@
             };
             reader.readAsText(file);
             event.target.value = ''; // Reset input
+        }
+
+        // ==========================================
+        // CLOUD SYNC FUNCTIONS (Supabase Storage)
+        // ==========================================
+        
+        async function pushToCloud() {
+            const btn = document.getElementById('btnPushCloud');
+            const statusEl = document.getElementById('cloudSyncStatusText');
+            const statusIndicator = document.getElementById('cloudSyncStatus');
+            
+            try {
+                // Check if user is authenticated
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    showToast("Please log in to use cloud sync", "error");
+                    return;
+                }
+
+                // Disable button and show loading state
+                btn.disabled = true;
+                const originalText = btn.querySelector('span').innerText;
+                btn.querySelector('span').innerText = 'Pushing...';
+
+                // Prepare data (same as exportData)
+                const data = {
+                    version: '1.2',
+                    todos: appData.todos,
+                    team: appData.team,
+                    pulseCheckData: appData.pulseCheckData,
+                    projects: appData.projects,
+                    accountColors: appData.accountColors,
+                    checkins: appData.checkins,
+                    ewsHistory: appData.ewsHistory,
+                    timesheets: appData.timesheets,
+                    rollCall: appData.rollCall,
+                    capacity: appData.capacity,
+                    capto: appData.capto,
+                    logbook: appData.logbook,
+                    broadcasts: appData.broadcasts,
+                    myDesk: appData.myDesk,
+                    calendarEvents: appData.calendarEvents,
+                    evaluations: appData.evaluations,
+                    meta: appData.meta,
+                    completedMyDesk: appData.completedMyDesk,
+                    quickLinks: appData.quickLinks,
+                    mailboxOrder: appData.mailboxOrder,
+                    garshuNotifications: appData.garshuNotifications,
+                    settings: appData.settings,
+                    braindump: localStorage.getItem('leadership_os_braindump') || '',
+                    attendanceHistory: getAttendanceHistory(),
+                    snoozedTasks: JSON.parse(localStorage.getItem('leadership_os_snoozed') || '[]'),
+                    emailGuide: localStorage.getItem('leadership_os_email_guide') || '',
+                    syncedAt: new Date().toISOString()
+                };
+
+                // Convert to blob
+                const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+                const fileName = `${session.user.id}/leadership_data_backup.json`;
+
+                // Upload to Supabase Storage
+                const { error: uploadError } = await supabaseClient.storage
+                    .from('leadership-os-backups')
+                    .upload(fileName, blob, {
+                        upsert: true,
+                        contentType: 'application/json'
+                    });
+
+                if (uploadError) throw uploadError;
+
+                // Update status
+                const now = new Date().toLocaleString();
+                statusEl.innerText = `Last pushed: ${now}`;
+                statusIndicator.querySelector('.w-2').classList.remove('bg-slate-300');
+                statusIndicator.querySelector('.w-2').classList.add('bg-green-500');
+
+                // Store last sync time in localStorage
+                localStorage.setItem('leadership_os_last_cloud_sync', new Date().toISOString());
+
+                showToast("Data pushed to cloud successfully!", "success");
+
+            } catch (error) {
+                console.error('Push to cloud error:', error);
+                showToast("Failed to push to cloud: " + error.message, "error");
+            } finally {
+                // Re-enable button
+                btn.disabled = false;
+                btn.querySelector('span').innerText = 'Push to Cloud';
+            }
+        }
+
+        async function pullFromCloud() {
+            const btn = document.getElementById('btnPullCloud');
+            const statusEl = document.getElementById('cloudSyncStatusText');
+            const statusIndicator = document.getElementById('cloudSyncStatus');
+            
+            try {
+                // Check if user is authenticated
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    showToast("Please log in to use cloud sync", "error");
+                    return;
+                }
+
+                // Confirm before overwriting local data
+                const confirmPull = confirm("⚠️ This will overwrite your local data with the cloud backup. Continue?");
+                if (!confirmPull) return;
+
+                // Disable button and show loading state
+                btn.disabled = true;
+                const originalText = btn.querySelector('span').innerText;
+                btn.querySelector('span').innerText = 'Pulling...';
+
+                const fileName = `${session.user.id}/leadership_data_backup.json`;
+
+                // Download from Supabase Storage
+                const { data: fileData, error: downloadError } = await supabaseClient.storage
+                    .from('leadership-os-backups')
+                    .download(fileName);
+
+                if (downloadError) throw downloadError;
+
+                // Parse the JSON
+                const text = await fileData.text();
+                const data = JSON.parse(text);
+
+                // Restore data (same logic as importData)
+                if (!data.team || !Array.isArray(data.team)) {
+                    throw new Error("Invalid Backup File: Missing 'team' roster data.");
+                }
+
+                // Restore all data
+                if (data.todos) appData.todos = data.todos;
+                if (data.team) appData.team = data.team;
+                if (data.pulseCheckData) appData.pulseCheckData = data.pulseCheckData;
+                if (data.checkins) appData.checkins = data.checkins;
+                if (data.ewsHistory) appData.ewsHistory = data.ewsHistory;
+                if (data.timesheets) appData.timesheets = data.timesheets;
+                if (data.rollCall) appData.rollCall = data.rollCall;
+                if (data.capacity) appData.capacity = data.capacity;
+                if (data.capto) appData.capto = data.capto;
+                if (data.logbook) appData.logbook = data.logbook;
+                if (data.broadcasts) appData.broadcasts = data.broadcasts;
+                if (data.myDesk) appData.myDesk = data.myDesk;
+                if (data.calendarEvents) appData.calendarEvents = data.calendarEvents;
+                if (data.evaluations) appData.evaluations = data.evaluations;
+                if (data.completedMyDesk) appData.completedMyDesk = data.completedMyDesk;
+
+                if (appData.myDesk) {
+                    initializeTaskSortOrders();
+                }
+
+                if (data.quickLinks) appData.quickLinks = data.quickLinks;
+                if (data.mailboxOrder) appData.mailboxOrder = data.mailboxOrder;
+                if (data.garshuNotifications) appData.garshuNotifications = data.garshuNotifications;
+                if (data.settings) appData.settings = data.settings;
+                if (data.projects) appData.projects = data.projects;
+                if (data.accountColors) appData.accountColors = data.accountColors;
+
+                // Restore localStorage items
+                if (data.braindump) localStorage.setItem('leadership_os_braindump', data.braindump);
+                if (data.snoozedTasks) localStorage.setItem('leadership_os_snoozed', JSON.stringify(data.snoozedTasks));
+                if (data.emailGuide) localStorage.setItem('leadership_os_email_guide', data.emailGuide);
+                if (data.attendanceHistory) {
+                    for (const [key, value] of Object.entries(data.attendanceHistory)) {
+                        localStorage.setItem(key, JSON.stringify(value));
+                    }
+                }
+
+                if (data.meta) appData.meta = data.meta;
+
+                // Save all changes
+                saveData();
+
+                // Re-render UI
+                if (typeof renderHubView === 'function') renderHubView();
+                if (typeof renderPulseView === 'function') renderPulseView();
+                if (typeof applyAccountColors === 'function') applyAccountColors();
+
+                // Update status
+                const syncTime = data.syncedAt ? new Date(data.syncedAt).toLocaleString() : 'Unknown';
+                statusEl.innerText = `Last pulled: ${syncTime}`;
+                statusIndicator.querySelector('.w-2').classList.remove('bg-slate-300');
+                statusIndicator.querySelector('.w-2').classList.add('bg-blue-500');
+
+                showToast("Data pulled from cloud successfully!", "success");
+
+            } catch (error) {
+                console.error('Pull from cloud error:', error);
+                if (error.message.includes('Object not found')) {
+                    showToast("No cloud backup found. Push your data first.", "error");
+                } else {
+                    showToast("Failed to pull from cloud: " + error.message, "error");
+                }
+            } finally {
+                // Re-enable button
+                btn.disabled = false;
+                btn.querySelector('span').innerText = 'Pull from Cloud';
+            }
+        }
+
+        // Update cloud sync status on page load
+        async function updateCloudSyncStatus() {
+            const statusEl = document.getElementById('cloudSyncStatusText');
+            const statusIndicator = document.getElementById('cloudSyncStatus');
+            
+            if (!statusEl || !statusIndicator) return;
+
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    statusEl.innerText = 'Not logged in';
+                    return;
+                }
+
+                const lastSync = localStorage.getItem('leadership_os_last_cloud_sync');
+                if (lastSync) {
+                    const syncDate = new Date(lastSync).toLocaleString();
+                    statusEl.innerText = `Last synced: ${syncDate}`;
+                    statusIndicator.querySelector('.w-2').classList.remove('bg-slate-300');
+                    statusIndicator.querySelector('.w-2').classList.add('bg-green-500');
+                } else {
+                    statusEl.innerText = 'Never synced';
+                }
+            } catch (error) {
+                console.error('Error updating cloud sync status:', error);
+            }
         }
 
         function checkBackupStatus() {
@@ -16651,21 +16961,106 @@
 
             const list = document.getElementById('broadcastTmChecklist');
             const search = document.getElementById('broadcastSearchInput').value.toLowerCase();
+            const filter = document.getElementById('broadcastTrackFilter').value;
+            const sortBy = document.getElementById('broadcastTrackSort').value;
             list.innerHTML = '';
 
+            // Get active team members
+            let teamMembers = appData.team.filter(t => t.active && t.name.toLowerCase().includes(search));
+
+            // Apply filter
+            if (filter === 'acknowledged') {
+                teamMembers = teamMembers.filter(tm => b.ack[tm.id]);
+            } else if (filter === 'pending') {
+                teamMembers = teamMembers.filter(tm => !b.ack[tm.id]);
+            }
+
+            // Apply sort
+            if (sortBy === 'name-asc') {
+                teamMembers.sort((x, y) => x.name.localeCompare(y.name));
+            } else if (sortBy === 'name-desc') {
+                teamMembers.sort((x, y) => y.name.localeCompare(x.name));
+            } else if (sortBy === 'status-ack') {
+                teamMembers.sort((x, y) => {
+                    const xAck = b.ack[x.id] ? 1 : 0;
+                    const yAck = b.ack[y.id] ? 1 : 0;
+                    if (yAck !== xAck) return yAck - xAck;
+                    return x.name.localeCompare(y.name);
+                });
+            } else if (sortBy === 'status-pending') {
+                teamMembers.sort((x, y) => {
+                    const xAck = b.ack[x.id] ? 1 : 0;
+                    const yAck = b.ack[y.id] ? 1 : 0;
+                    if (xAck !== yAck) return xAck - yAck;
+                    return x.name.localeCompare(y.name);
+                });
+            } else if (sortBy === 'account') {
+                teamMembers.sort((x, y) => {
+                    const xAcc = x.account || 'Zzz';
+                    const yAcc = y.account || 'Zzz';
+                    if (xAcc !== yAcc) return xAcc.localeCompare(yAcc);
+                    return x.name.localeCompare(y.name);
+                });
+            }
+
+            // Calculate stats
+            const totalActive = appData.team.filter(t => t.active).length;
             let ackCount = 0;
-            appData.team.filter(t => t.active && t.name.toLowerCase().includes(search)).sort((x, y) => x.name.localeCompare(y.name)).forEach(tm => {
+            appData.team.filter(t => t.active).forEach(tm => {
+                if (b.ack[tm.id]) ackCount++;
+            });
+            const percentage = totalActive > 0 ? Math.round((ackCount / totalActive) * 100) : 0;
+
+            // Update progress display
+            document.getElementById('broadcastTrackProgress').textContent = `${ackCount}/${totalActive} Acknowledged`;
+            document.getElementById('broadcastTrackPercentage').textContent = `(${percentage}%)`;
+            document.getElementById('broadcastTrackProgressBar').style.width = `${percentage}%`;
+
+            // Render team members
+            teamMembers.forEach(tm => {
                 const isAck = b.ack[tm.id];
-                if (isAck) ackCount++;
+                const accountBadge = tm.account ? `<span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">${tm.account}</span>` : '';
+                const statusIcon = isAck 
+                    ? `<svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                       </svg>`
+                    : `<svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                       </svg>`;
+
                 list.innerHTML += `
-                <label class="flex items-center p-2 hover:bg-slate-50">
-                    <input type="checkbox" onchange="toggleBcAck('${b.id}', ${tm.id})" ${isAck ? 'checked' : ''} class="form-checkbox h-5 w-5 text-hub-600 rounded">
-                    <span class="ml-3 text-slate-700 ${isAck ? 'line-through text-slate-400' : ''}">${tm.name}</span>
+                <label class="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg border border-slate-200 cursor-pointer transition-all ${isAck ? 'bg-green-50/30' : 'bg-white'}">
+                    <input type="checkbox" onchange="toggleBcAck('${b.id}', ${tm.id})" ${isAck ? 'checked' : ''} 
+                        class="form-checkbox h-5 w-5 text-hub-600 rounded border-slate-300 focus:ring-2 focus:ring-hub-500">
+                    ${statusIcon}
+                    <div class="flex-1 min-w-0">
+                        <span class="block text-sm font-medium ${isAck ? 'text-slate-400 line-through' : 'text-slate-700'}">${tm.name}</span>
+                        ${accountBadge}
+                    </div>
                 </label>`;
             });
-            document.getElementById('broadcastTrackProgress').textContent = `${ackCount} Acknowledged`;
 
             if (!document.body.classList.contains('modal-active')) toggleModal('broadcastTrackModal');
+        }
+
+        function setBroadcastTrackFilter(filterType) {
+            document.getElementById('broadcastTrackFilter').value = filterType;
+            
+            // Update button styles
+            document.querySelectorAll('.broadcast-filter-btn').forEach(btn => {
+                if (btn.getAttribute('data-filter') === filterType) {
+                    btn.className = 'broadcast-filter-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all border-2 border-slate-300 bg-slate-50 text-slate-700';
+                } else {
+                    btn.className = 'broadcast-filter-btn px-4 py-2 text-sm font-semibold rounded-lg transition-all border-2 border-transparent bg-white text-slate-600 hover:bg-slate-50';
+                }
+            });
+            
+            openBroadcastTrackModal(document.getElementById('broadcastTrackId').value);
+        }
+
+        function setBroadcastTrackSort(sortType) {
+            document.getElementById('broadcastTrackSort').value = sortType;
+            openBroadcastTrackModal(document.getElementById('broadcastTrackId').value);
         }
 
         function toggleBcAck(bid, tmid) {
@@ -20115,6 +20510,7 @@ ${JSON.stringify(context, null, 2)}`;
             startOsClock();
             checkSnoozedTasks();
             updateSnoozeButton();
+            updateCloudSyncStatus();
 
             // Check for returned snoozed tasks every minute
             setInterval(checkSnoozedTasks, 60000);
@@ -20160,6 +20556,508 @@ ${JSON.stringify(context, null, 2)}`;
                 }, 1000); // Small delay for smooth entrance
             }
         };
+
+        // ==========================================
+        // CLIENT SYNC GENERATOR
+        // ==========================================
+        
+        const clientSyncState = {
+            memberId: null,
+            memberName: '',
+            memberRole: '',
+            startMonth: '',
+            endMonth: '',
+            aggregatedData: {},
+            contextNotes: {}
+        };
+
+        let clientSyncMembersList = [];
+
+        function openClientSyncModal() {
+            const modal = document.getElementById('client-sync-modal');
+            modal.classList.remove('hidden');
+            
+            // Reset state
+            clientSyncState.memberId = null;
+            clientSyncState.memberName = '';
+            clientSyncState.memberRole = '';
+            clientSyncState.startMonth = '';
+            clientSyncState.endMonth = '';
+            clientSyncState.aggregatedData = {};
+            clientSyncState.contextNotes = {};
+            
+            // Show config screen, hide preview
+            document.getElementById('client-sync-config').classList.remove('hidden');
+            document.getElementById('client-sync-preview').classList.add('hidden');
+            
+            // Reset search input
+            document.getElementById('client-sync-member-search').value = '';
+            document.getElementById('client-sync-member-id').value = '';
+            
+            // Populate member list for fuzzy search
+            clientSyncMembersList = appData.team ? appData.team.filter(m => m.active) : [];
+            filterClientSyncMembers('');
+            
+            // Clear date dropdowns
+            document.getElementById('client-sync-start-month').innerHTML = '<option value="">Select start...</option>';
+            document.getElementById('client-sync-end-month').innerHTML = '<option value="">Select end...</option>';
+            
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closeClientSyncModal() {
+            document.getElementById('client-sync-modal').classList.add('hidden');
+            document.getElementById('client-sync-member-dropdown').classList.add('hidden');
+        }
+
+        function showClientSyncConfig() {
+            document.getElementById('client-sync-config').classList.remove('hidden');
+            document.getElementById('client-sync-preview').classList.add('hidden');
+        }
+
+        function showClientSyncMemberDropdown() {
+            document.getElementById('client-sync-member-dropdown').classList.remove('hidden');
+        }
+
+        function filterClientSyncMembers(query) {
+            const dropdown = document.getElementById('client-sync-member-dropdown');
+            const list = document.getElementById('client-sync-member-list');
+            
+            const filtered = clientSyncMembersList.filter(m => {
+                const searchText = `${m.name} ${m.role || ''}`.toLowerCase();
+                return searchText.includes(query.toLowerCase());
+            });
+            
+            list.innerHTML = '';
+            
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="px-4 py-3 text-sm text-slate-500">No members found</div>';
+            } else {
+                filtered.forEach(member => {
+                    const item = document.createElement('div');
+                    item.className = 'px-4 py-3 hover:bg-blue-50 cursor-pointer text-sm transition-colors';
+                    item.innerHTML = `
+                        <div class="font-semibold text-slate-800">${member.name}</div>
+                        <div class="text-xs text-slate-500">${member.role || 'Team Member'}</div>
+                    `;
+                    item.onclick = () => selectClientSyncMember(member);
+                    list.appendChild(item);
+                });
+            }
+            
+            dropdown.classList.remove('hidden');
+        }
+
+        function selectClientSyncMember(member) {
+            document.getElementById('client-sync-member-search').value = `${member.name} - ${member.role || 'Team Member'}`;
+            document.getElementById('client-sync-member-id').value = member.id;
+            document.getElementById('client-sync-member-dropdown').classList.add('hidden');
+            
+            // Update date range options
+            updateClientSyncDateRange(member.id);
+        }
+
+        function updateClientSyncDateRange(memberId) {
+            if (!memberId) {
+                memberId = document.getElementById('client-sync-member-id').value;
+            }
+            
+            if (!memberId) {
+                document.getElementById('client-sync-start-month').innerHTML = '<option value="">Select start...</option>';
+                document.getElementById('client-sync-end-month').innerHTML = '<option value="">Select end...</option>';
+                return;
+            }
+            
+            const member = appData.team.find(m => m.id == memberId);
+            if (!member || !member.history || member.history.length === 0) {
+                document.getElementById('client-sync-start-month').innerHTML = '<option value="">No history available</option>';
+                document.getElementById('client-sync-end-month').innerHTML = '<option value="">No history available</option>';
+                return;
+            }
+            
+            // Get all months with completed ratings
+            const availableMonths = member.history
+                .filter(h => h.finalScore && h.finalScore > 0)
+                .map(h => h.month)
+                .sort((a, b) => getMonthValue(a) - getMonthValue(b));
+            
+            if (availableMonths.length === 0) {
+                document.getElementById('client-sync-start-month').innerHTML = '<option value="">No completed ratings</option>';
+                document.getElementById('client-sync-end-month').innerHTML = '<option value="">No completed ratings</option>';
+                return;
+            }
+            
+            // Populate start month dropdown
+            const startSelect = document.getElementById('client-sync-start-month');
+            startSelect.innerHTML = '<option value="">Select start...</option>';
+            availableMonths.forEach(month => {
+                const option = document.createElement('option');
+                option.value = month;
+                option.textContent = month;
+                startSelect.appendChild(option);
+            });
+            
+            // Populate end month dropdown
+            const endSelect = document.getElementById('client-sync-end-month');
+            endSelect.innerHTML = '<option value="">Select end...</option>';
+            availableMonths.forEach(month => {
+                const option = document.createElement('option');
+                option.value = month;
+                option.textContent = month;
+                endSelect.appendChild(option);
+            });
+        }
+
+        function generateClientSyncStatement() {
+            const memberId = document.getElementById('client-sync-member-id').value;
+            const startMonth = document.getElementById('client-sync-start-month').value;
+            const endMonth = document.getElementById('client-sync-end-month').value;
+            
+            // Validation
+            if (!memberId) {
+                showToast('Please select a team member', 'error');
+                return;
+            }
+            if (!startMonth || !endMonth) {
+                showToast('Please select both start and end months', 'error');
+                return;
+            }
+            
+            const startValue = getMonthValue(startMonth);
+            const endValue = getMonthValue(endMonth);
+            
+            if (startValue > endValue) {
+                showToast('Start month must be before or equal to end month', 'error');
+                return;
+            }
+            
+            const member = appData.team.find(m => m.id == memberId);
+            if (!member) {
+                showToast('Member not found', 'error');
+                return;
+            }
+            
+            // Store member info
+            clientSyncState.memberId = memberId;
+            clientSyncState.memberName = member.name;
+            clientSyncState.memberRole = member.role || 'Team Member';
+            clientSyncState.startMonth = startMonth;
+            clientSyncState.endMonth = endMonth;
+            
+            // Filter history entries within date range
+            const filteredHistory = member.history.filter(h => {
+                // Match dropdown logic: check for finalScore > 0
+                if (!(h.finalScore && h.finalScore > 0) || !h.metrics || !h.month) return false;
+                const monthValue = getMonthValue(h.month);
+                return monthValue >= startValue && monthValue <= endValue;
+            });
+            
+            if (filteredHistory.length === 0) {
+                showToast('No completed ratings found in the selected period', 'error');
+                return;
+            }
+            
+            // Process performance metrics (exclude internal metrics)
+            const aggregatedData = {};
+            
+            filteredHistory.forEach(entry => {
+                // Handle metrics as an array (LeadershipOS structure)
+                if (entry.metrics && Array.isArray(entry.metrics)) {
+                    entry.metrics.forEach(metric => {
+                        // Use metric name as key since metrics are stored as array
+                        const metricName = metric.name;
+                        
+                        if (!aggregatedData[metricName]) {
+                            aggregatedData[metricName] = {
+                                scores: [],
+                                wsllSet: new Set(),
+                                definition: metric.definition || '',
+                                name: metricName
+                            };
+                        }
+                        
+                        // Add score
+                        if (metric.score) {
+                            aggregatedData[metricName].scores.push(metric.score);
+                        }
+                        
+                        // Add WSLL if exists and not empty
+                        if (metric.wsll && metric.wsll.trim() !== '') {
+                            aggregatedData[metricName].wsllSet.add(metric.wsll.trim());
+                        }
+                    });
+                }
+            });
+            
+            // Calculate averages and prepare final data
+            const finalData = {};
+            Object.keys(aggregatedData).forEach(metricName => {
+                const data = aggregatedData[metricName];
+                
+                const avgScore = data.scores.length > 0
+                    ? (data.scores.reduce((a, b) => a + b, 0) / data.scores.length)
+                    : 0;
+                
+                // Use metric name as the key for final data
+                finalData[metricName] = {
+                    name: data.name,
+                    icon: '📊', // Default icon since metrics don't have icons in array structure
+                    avgScore: avgScore,
+                    wsllList: Array.from(data.wsllSet),
+                    contextNote: ''
+                };
+            });
+            
+            clientSyncState.aggregatedData = finalData;
+            clientSyncState.contextNotes = {};
+            
+            // Render the card
+            renderClientSyncCard();
+            
+            // Show preview, hide config
+            document.getElementById('client-sync-config').classList.add('hidden');
+            document.getElementById('client-sync-preview').classList.remove('hidden');
+            
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function getPerformanceBadge(score) {
+            let label = '';
+            let bgColor = '';
+            let textColor = '';
+            
+            if (score >= 4.5) {
+                label = 'Outstanding';
+                bgColor = 'bg-purple-100';
+                textColor = 'text-purple-700';
+            } else if (score >= 4.0) {
+                label = 'Exceeds Expectations';
+                bgColor = 'bg-blue-100';
+                textColor = 'text-blue-700';
+            } else if (score >= 3.5) {
+                label = 'Strong Performer';
+                bgColor = 'bg-teal-100';
+                textColor = 'text-teal-700';
+            } else if (score >= 3.0) {
+                label = 'Meets Expectations';
+                bgColor = 'bg-green-100';
+                textColor = 'text-green-700';
+            } else if (score >= 2.0) {
+                label = 'Developing';
+                bgColor = 'bg-amber-100';
+                textColor = 'text-amber-700';
+            } else {
+                label = 'Below Expectations';
+                bgColor = 'bg-red-100';
+                textColor = 'text-red-700';
+            }
+            
+            return { label, bgColor, textColor };
+        }
+
+        function renderClientSyncCard() {
+            // Update card header
+            document.getElementById('card-member-name').textContent = clientSyncState.memberName;
+            document.getElementById('card-member-role').textContent = clientSyncState.memberRole;
+            document.getElementById('card-date-range').textContent = `${clientSyncState.startMonth} - ${clientSyncState.endMonth}`;
+            
+            // Render metrics
+            const container = document.getElementById('card-metrics-container');
+            container.innerHTML = '';
+            
+            const metrics = Object.keys(clientSyncState.aggregatedData);
+            if (metrics.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-center py-8">No performance metrics found in this period.</p>';
+                return;
+            }
+            
+            metrics.forEach(metricId => {
+                const data = clientSyncState.aggregatedData[metricId];
+                const badge = getPerformanceBadge(data.avgScore);
+                
+                const metricDiv = document.createElement('div');
+                metricDiv.className = 'border-b border-slate-200 pb-6 last:border-b-0';
+                
+                // WSLL list HTML
+                let wsllHtml = '';
+                if (data.wsllList.length > 0) {
+                    wsllHtml = `
+                        <div class="mt-3">
+                            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Success Criteria</p>
+                            <ul class="space-y-1.5">
+                                ${data.wsllList.map(wsll => `
+                                    <li class="text-sm text-slate-700 flex items-start gap-2">
+                                        <span class="text-blue-500 mt-1">•</span>
+                                        <span>${wsll}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                } else {
+                    wsllHtml = `
+                        <div class="mt-3">
+                            <p class="text-xs text-slate-400 italic">No success criteria defined for this period.</p>
+                        </div>
+                    `;
+                }
+                
+                metricDiv.innerHTML = `
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <i data-lucide="${data.icon}" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-800">${data.name}</h4>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-3xl font-black text-blue-600">${data.avgScore.toFixed(1)}</p>
+                            <p class="text-xs text-slate-500 font-bold mb-2">/ 5.0</p>
+                            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold ${badge.bgColor} ${badge.textColor} uppercase tracking-wide">
+                                ${badge.label}
+                            </span>
+                        </div>
+                    </div>
+                    ${wsllHtml}
+                    <div class="mt-4">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Context Note</label>
+                        <textarea 
+                            oninput="updateContextNote('${metricId}', this.value)"
+                            placeholder="Add context for the client (optional)..."
+                            class="w-full p-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                            rows="2">${clientSyncState.contextNotes[metricId] || ''}</textarea>
+                    </div>
+                `;
+                
+                container.appendChild(metricDiv);
+            });
+            
+            // Render email template
+            renderEmailTemplate();
+            
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function updateContextNote(metricId, text) {
+            clientSyncState.contextNotes[metricId] = text;
+            
+            // Update the card display (for export)
+            const data = clientSyncState.aggregatedData[metricId];
+            if (data) {
+                data.contextNote = text;
+            }
+        }
+
+        function renderEmailTemplate() {
+            const emailText = `Hi [Client Name],
+
+Please find attached the Performance Summary for ${clientSyncState.memberName} covering ${clientSyncState.startMonth} - ${clientSyncState.endMonth}.
+
+This summary reflects our internal alignment on their Key Focus Areas (Metrics), Success Criteria, and Performance Rating.
+
+We want to ensure that our current understanding of the role's priorities matches yours. Your validation here will serve as the baseline for the metrics we track in the next cycle.
+
+Please simply reply with one of the options below:
+
+A. Fully Aligned: This matches my experience; the metrics and scores are accurate.
+B. Mostly Aligned: I agree with the performance, but I'd like to adjust the Focus/Metrics for next time.
+C. Misaligned: I have different feedback or priorities.
+D. Can we have a quick meeting?
+
+Best,
+[Your Name]`;
+            
+            document.getElementById('email-template-text').textContent = emailText;
+        }
+
+        function copyEmailTemplate() {
+            const emailText = document.getElementById('email-template-text').textContent;
+            
+            navigator.clipboard.writeText(emailText).then(() => {
+                showToast('Email template copied to clipboard!', 'success');
+            }).catch(err => {
+                showToast('Failed to copy to clipboard', 'error');
+                console.error('Copy failed:', err);
+            });
+        }
+
+        function previewClientSyncCard() {
+            const cardElement = document.getElementById('client-sync-card');
+            
+            if (!cardElement) {
+                showToast('Card element not found', 'error');
+                return;
+            }
+            
+            // Clone the card
+            const cardClone = cardElement.cloneNode(true);
+            cardClone.id = 'client-sync-preview-clone';
+            cardClone.classList.add('transform', 'scale-105', 'shadow-2xl', 'rounded-2xl', 'overflow-hidden');
+            
+            // Insert clone into preview container
+            const previewContainer = document.getElementById('client-sync-preview-container');
+            previewContainer.innerHTML = '';
+            previewContainer.appendChild(cardClone);
+            
+            // Show preview modal
+            const modal = document.getElementById('client-sync-preview-modal');
+            modal.classList.remove('hidden');
+            
+            // Animate in
+            setTimeout(() => {
+                cardClone.classList.add('animate-in', 'fade-in', 'zoom-in');
+            }, 10);
+            
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closeClientSyncPreview() {
+            const modal = document.getElementById('client-sync-preview-modal');
+            modal.classList.add('hidden');
+        }
+
+        async function downloadClientSyncCard() {
+            const cardElement = document.getElementById('client-sync-card');
+            
+            if (!cardElement) {
+                showToast('Card element not found', 'error');
+                return;
+            }
+            
+            try {
+                showToast('Generating image...', 'info');
+                
+                const canvas = await html2canvas(cardElement, {
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    useCORS: true
+                });
+                
+                const link = document.createElement('a');
+                const fileName = `performance-statement-${clientSyncState.memberName.replace(/\s+/g, '-')}-${clientSyncState.startMonth.replace(/\s+/g, '')}-${clientSyncState.endMonth.replace(/\s+/g, '')}.png`;
+                link.download = fileName;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                showToast('Image downloaded successfully!', 'success');
+            } catch (error) {
+                showToast('Failed to generate image', 'error');
+                console.error('html2canvas error:', error);
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('client-sync-member-dropdown');
+            const searchInput = document.getElementById('client-sync-member-search');
+            
+            if (dropdown && searchInput && !dropdown.contains(e.target) && e.target !== searchInput) {
+                dropdown.classList.add('hidden');
+            }
+        });
 
         // ==========================================
         // QUICK CAPTURE LOGIC (Smart Parser)
@@ -20643,7 +21541,14 @@ ${JSON.stringify(context, null, 2)}`;
             if (e.key === 'Escape') {
                 e.preventDefault();
 
-                // First, check for specific modals with custom toggle functions
+                // First, check for Client Sync preview modal
+                const clientSyncPreviewModal = document.getElementById('client-sync-preview-modal');
+                if (clientSyncPreviewModal && !clientSyncPreviewModal.classList.contains('hidden')) {
+                    closeClientSyncPreview();
+                    return;
+                }
+
+                // Check for specific modals with custom toggle functions
                 const shortcutsModal = document.getElementById('shortcutsModal');
                 if (shortcutsModal && !shortcutsModal.classList.contains('hidden')) {
                     toggleShortcutsModal(false);
@@ -21370,6 +22275,40 @@ ${JSON.stringify(context, null, 2)}`;
                             <div id="backupStatusIndicator"
                                 class="text-center text-xs font-medium text-slate-400 mt-2 flex items-center justify-center gap-1">
                                 <span class="w-2 h-2 rounded-full bg-slate-300"></span> Not connected
+                            </div>
+                        </div>
+
+                        <!-- Cloud Sync Section -->
+                        <div class="mt-4 pt-3 border-t border-blue-200/60">
+                            <h5 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                                </svg>
+                                Cloud Sync
+                            </h5>
+
+                            <div class="grid grid-cols-2 gap-2 mb-3">
+                                <button onclick="pushToCloud()" id="btnPushCloud"
+                                    class="flex items-center justify-center gap-2 bg-white hover:bg-green-50 text-green-600 font-bold py-2.5 px-3 rounded-lg transition-all border border-green-200 hover:border-green-400 group text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <span>Push to Cloud</span>
+                                </button>
+
+                                <button onclick="pullFromCloud()" id="btnPullCloud"
+                                    class="flex items-center justify-center gap-2 bg-white hover:bg-blue-50 text-blue-600 font-bold py-2.5 px-3 rounded-lg transition-all border border-blue-200 hover:border-blue-400 group text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                                    </svg>
+                                    <span>Pull from Cloud</span>
+                                </button>
+                            </div>
+
+                            <div id="cloudSyncStatus"
+                                class="text-center text-xs font-medium text-slate-400 flex items-center justify-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                                <span id="cloudSyncStatusText">Never synced</span>
                             </div>
                         </div>
                     </div>
@@ -30650,6 +31589,180 @@ ${JSON.stringify(context, null, 2)}`;
             </div>
         </div>
     </div>
+
+    <!-- Client Sync Modal -->
+    <div id="client-sync-modal" class="fixed inset-0 z-[120] hidden bg-slate-900/50 backdrop-blur-sm">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[95vh] overflow-hidden flex flex-col">
+                <!-- Header -->
+                <div class="px-8 py-6 border-b border-slate-200 flex-none">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-slate-800 rounded-xl text-white">
+                                <i data-lucide="share-2" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Client Sync Generator</h2>
+                                <p class="text-sm text-slate-500 font-medium mt-0.5">Generate performance executive statements</p>
+                            </div>
+                        </div>
+                        <button onclick="closeClientSyncModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-200 transition-colors">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 overflow-y-auto p-8">
+                    <!-- Step 1: Configuration -->
+                    <div id="client-sync-config" class="space-y-6">
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="settings" class="w-5 h-5 text-blue-600"></i>
+                                Configuration
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <!-- Member Selection with Fuzzy Search -->
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Select Member</label>
+                                    <div class="relative">
+                                        <input type="text" id="client-sync-member-search" placeholder="Type to search team members..."
+                                            oninput="filterClientSyncMembers(this.value)"
+                                            onfocus="showClientSyncMemberDropdown()"
+                                            class="w-full p-3 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <input type="hidden" id="client-sync-member-id">
+                                        
+                                        <!-- Dropdown Results -->
+                                        <div id="client-sync-member-dropdown" class="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-64 overflow-y-auto hidden">
+                                            <div id="client-sync-member-list" class="py-2">
+                                                <!-- Members populated by JavaScript -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Date Range -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">Start Month</label>
+                                        <select id="client-sync-start-month"
+                                            class="w-full p-3 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                            <option value="">Select start...</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">End Month</label>
+                                        <select id="client-sync-end-month"
+                                            class="w-full p-3 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                            <option value="">Select end...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Generate Button -->
+                                <button onclick="generateClientSyncStatement()" 
+                                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg flex items-center justify-center gap-2">
+                                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                                    Generate Statement
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Executive Card Preview -->
+                    <div id="client-sync-preview" class="hidden space-y-6">
+                        <!-- Executive Card -->
+                        <div id="client-sync-card" class="bg-white border-2 border-slate-200 rounded-2xl overflow-hidden shadow-xl">
+                            <!-- Card Header -->
+                            <div class="bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 px-8 py-6 text-white">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h3 id="card-member-name" class="text-3xl font-black tracking-tight">Member Name</h3>
+                                        <p id="card-member-role" class="text-lg font-medium mt-1 text-white/90">Role Title</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-sm font-bold text-white/80 uppercase tracking-wider">Performance Period</p>
+                                        <p id="card-date-range" class="text-xl font-bold mt-1">Jan '26 - Jun '26</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div id="card-metrics-container" class="p-8 space-y-6">
+                                <!-- Metrics will be dynamically inserted here -->
+                            </div>
+
+                            <!-- Card Footer -->
+                            <div class="bg-slate-50 px-8 py-4 border-t border-slate-200">
+                                <p class="text-xs text-slate-500 text-center font-medium">Generated via DCX Performance Cloud</p>
+                            </div>
+                        </div>
+
+                        <!-- Email Template Section -->
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                    <i data-lucide="mail" class="w-5 h-5 text-green-600"></i>
+                                    Client Email Template
+                                </h3>
+                                <button onclick="copyEmailTemplate()" 
+                                    class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-bold rounded-lg hover:bg-green-700 transition-all">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                    Copy to Clipboard
+                                </button>
+                            </div>
+                            <div id="email-template-text" class="bg-white border border-green-200 rounded-lg p-4 text-sm text-slate-700 leading-relaxed font-mono whitespace-pre-wrap">
+                                <!-- Email template will be inserted here -->
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-3">
+                            <button onclick="showClientSyncConfig()" 
+                                class="flex-1 bg-slate-200 text-slate-700 font-bold py-3 px-6 rounded-lg hover:bg-slate-300 transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                                Back
+                            </button>
+                            <button onclick="previewClientSyncCard()" 
+                                class="flex-1 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:from-cyan-700 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                                Preview Snapshot
+                            </button>
+                            <button onclick="downloadClientSyncCard()" 
+                                class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 px-6 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg flex items-center justify-center gap-2">
+                                <i data-lucide="download" class="w-5 h-5"></i>
+                                Download Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Sync Preview Modal (Full-Screen Lightbox) -->
+    <div id="client-sync-preview-modal" class="fixed inset-0 z-[130] hidden bg-slate-900/90 backdrop-blur-sm" onclick="closeClientSyncPreview()">
+        <div class="flex items-center justify-center min-h-screen p-8">
+            <!-- Close Button -->
+            <button onclick="closeClientSyncPreview()" class="fixed top-6 right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white backdrop-blur-md transition-all z-10">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            
+            <!-- Screenshot Instruction -->
+            <div class="fixed top-6 left-6 bg-white/10 backdrop-blur-md rounded-lg px-4 py-2 text-white text-sm font-medium z-10">
+                <i data-lucide="info" class="w-4 h-4 inline mr-2"></i>
+                <span class="hidden md:inline">Press <kbd class="px-2 py-1 bg-white/20 rounded text-xs font-bold">Ctrl+Shift+S</kbd> to screenshot</span>
+                <span class="md:hidden">Tap and hold to screenshot</span>
+            </div>
+            
+            <!-- Card Preview Container -->
+            <div id="client-sync-preview-container" class="relative max-w-4xl w-full" onclick="event.stopPropagation()">
+                <!-- Card will be cloned here -->
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

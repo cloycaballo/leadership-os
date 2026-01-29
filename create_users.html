@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Supabase Users - LeadershipOS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl w-full">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Create LeadershipOS Users</h1>
+        <p class="text-gray-600 mb-6">This tool will create the 4 authorized users in Supabase.</p>
+        
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold mb-2">Users to Create:</h2>
+            <ul class="space-y-2 text-sm">
+                <li class="flex items-center gap-2">
+                    <span id="status-1" class="w-4 h-4 rounded-full bg-gray-300"></span>
+                    <span>admin@leados.com</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span id="status-2" class="w-4 h-4 rounded-full bg-gray-300"></span>
+                    <span>cloy.caballo@leados.com</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span id="status-3" class="w-4 h-4 rounded-full bg-gray-300"></span>
+                    <span>chill.aledo@leados.com</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <span id="status-4" class="w-4 h-4 rounded-full bg-gray-300"></span>
+                    <span>reyma.pesigan@leados.com</span>
+                </li>
+            </ul>
+        </div>
+
+        <button 
+            id="createBtn"
+            onclick="createUsers()"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+            Create All Users
+        </button>
+
+        <div id="output" class="mt-6 p-4 bg-gray-50 rounded-lg hidden">
+            <h3 class="font-semibold mb-2">Output:</h3>
+            <pre id="outputText" class="text-xs text-gray-700 whitespace-pre-wrap"></pre>
+        </div>
+
+        <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p class="text-sm text-yellow-800">
+                <strong>Note:</strong> This page uses the Supabase client to create users via sign-up. 
+                If sign-ups are disabled in your Supabase project, you'll need to enable them temporarily 
+                or create users manually via the Supabase Dashboard.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase Client
+        const SUPABASE_URL = 'https://gesxrlyplcotlubhuvri.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdlc3hybHlwbGNvdGx1Ymh1dnJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MjIyMjQsImV4cCI6MjA4MzI5ODIyNH0.yNzfleskGUDBH4rGjBiR-9fY4VLDFYX-ru6zKQIRGxI';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const users = [
+            { email: 'admin@leados.com', password: 'Admin!123' },
+            { email: 'cloy.caballo@leados.com', password: 'Admin!123' },
+            { email: 'chill.aledo@leados.com', password: 'Prolevel#2026' },
+            { email: 'reyma.pesigan@leados.com', password: 'Prolevel#2026' }
+        ];
+
+        function log(message) {
+            const output = document.getElementById('output');
+            const outputText = document.getElementById('outputText');
+            output.classList.remove('hidden');
+            outputText.textContent += message + '\n';
+        }
+
+        function updateStatus(index, success) {
+            const statusEl = document.getElementById(`status-${index + 1}`);
+            if (success) {
+                statusEl.classList.remove('bg-gray-300', 'bg-red-500');
+                statusEl.classList.add('bg-green-500');
+            } else {
+                statusEl.classList.remove('bg-gray-300', 'bg-green-500');
+                statusEl.classList.add('bg-red-500');
+            }
+        }
+
+        async function createUsers() {
+            const btn = document.getElementById('createBtn');
+            btn.disabled = true;
+            btn.textContent = 'Creating users...';
+            
+            document.getElementById('outputText').textContent = '';
+            log('Starting user creation process...\n');
+
+            for (let i = 0; i < users.length; i++) {
+                const user = users[i];
+                log(`Creating user ${i + 1}/4: ${user.email}`);
+
+                try {
+                    // Sign up the user
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email: user.email,
+                        password: user.password,
+                        options: {
+                            emailRedirectTo: window.location.origin
+                        }
+                    });
+
+                    if (error) {
+                        if (error.message.includes('already registered')) {
+                            log(`✓ User already exists: ${user.email}`);
+                            updateStatus(i, true);
+                        } else {
+                            throw error;
+                        }
+                    } else {
+                        log(`✓ Successfully created: ${user.email}`);
+                        updateStatus(i, true);
+                    }
+
+                    // Sign out after creating each user
+                    await supabaseClient.auth.signOut();
+
+                } catch (error) {
+                    log(`✗ Failed to create ${user.email}: ${error.message}`);
+                    updateStatus(i, false);
+                }
+
+                log(''); // Empty line for spacing
+            }
+
+            log('User creation process completed!');
+            log('\nYou can now close this page and log in to LeadershipOS with any of these accounts.');
+            
+            btn.textContent = 'Done!';
+            btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            btn.classList.add('bg-green-600');
+        }
+    </script>
+</body>
+</html>
