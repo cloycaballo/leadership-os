@@ -1,0 +1,377 @@
+{
+  "version": "1.2",
+  "team": [
+    {
+      "id": 2001,
+      "name": "Alex Rivera",
+      "account": "TechStart Solutions",
+      "role": "Senior Developer",
+      "active": true,
+      "ews": "green",
+      "empId": "DEMO-001",
+      "poc": "Jane Smith",
+      "pocEmail": "jane.smith@techstart.com",
+      "hireDate": "2023-03-15",
+      "nickname": "Alex",
+      "phone": "",
+      "address": "",
+      "iceName": "",
+      "icePhone": "",
+      "birthday": "1992-06-20",
+      "metricBuildingData": {},
+      "history": []
+    },
+    {
+      "id": 2002,
+      "name": "Maria Santos",
+      "account": "CloudNine Inc",
+      "role": "Project Manager",
+      "active": true,
+      "ews": "green",
+      "empId": "DEMO-002",
+      "poc": "Robert Chen",
+      "pocEmail": "robert.chen@cloudnine.com",
+      "hireDate": "2023-01-10",
+      "nickname": "Mari",
+      "phone": "",
+      "address": "",
+      "iceName": "",
+      "icePhone": "",
+      "birthday": "1990-11-05",
+      "metricBuildingData": {},
+      "history": []
+    },
+    {
+      "id": 2003,
+      "name": "James Wilson",
+      "account": "DataFlow Systems",
+      "role": "Business Analyst",
+      "active": true,
+      "ews": "yellow",
+      "empId": "DEMO-003",
+      "poc": "Lisa Anderson",
+      "pocEmail": "lisa.anderson@dataflow.com",
+      "hireDate": "2023-07-22",
+      "nickname": "Jim",
+      "phone": "",
+      "address": "",
+      "iceName": "",
+      "icePhone": "",
+      "birthday": "1988-03-12",
+      "metricBuildingData": {},
+      "history": []
+    },
+    {
+      "id": 2004,
+      "name": "Sarah Johnson",
+      "account": "TechStart Solutions",
+      "role": "UX Designer",
+      "active": true,
+      "ews": "green",
+      "empId": "DEMO-004",
+      "poc": "Jane Smith",
+      "pocEmail": "jane.smith@techstart.com",
+      "hireDate": "2023-05-18",
+      "nickname": "Sarah",
+      "phone": "",
+      "address": "",
+      "iceName": "",
+      "icePhone": "",
+      "birthday": "1995-09-08",
+      "metricBuildingData": {},
+      "history": []
+    },
+    {
+      "id": 2005,
+      "name": "Michael Lee",
+      "account": "CloudNine Inc",
+      "role": "DevOps Engineer",
+      "active": true,
+      "ews": "green",
+      "empId": "DEMO-005",
+      "poc": "Robert Chen",
+      "pocEmail": "robert.chen@cloudnine.com",
+      "hireDate": "2022-11-30",
+      "nickname": "Mike",
+      "phone": "",
+      "address": "",
+      "iceName": "",
+      "icePhone": "",
+      "birthday": "1991-04-25",
+      "metricBuildingData": {},
+      "history": []
+    },
+    {
+      "id": 2006,
+      "name": "Emily Davis",
+      "account": "DataFlow Systems",
+      "role": "QA Specialist",
+      "active": true,
+      "ews": "green",
+      "empId": "DEMO-006",
+      "poc": "Lisa Anderson",
+      "pocEmail": "lisa.anderson@dataflow.com",
+      "hireDate": "2023-02-14",
+      "nickname": "Em",
+      "phone": "",
+      "address": "",
+      "iceName": "",
+      "icePhone": "",
+      "birthday": "1993-07-30",
+      "metricBuildingData": {},
+      "history": []
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-001",
+      "name": "Mobile App Redesign",
+      "client": "TechStart Solutions",
+      "status": "active",
+      "priority": "high",
+      "startDate": "2026-01-15",
+      "dueDate": "2026-03-30",
+      "progress": 45,
+      "team": ["Alex Rivera", "Sarah Johnson"],
+      "description": "Complete UI/UX overhaul of mobile application"
+    },
+    {
+      "id": "proj-002",
+      "name": "Cloud Migration",
+      "client": "CloudNine Inc",
+      "status": "active",
+      "priority": "high",
+      "startDate": "2026-01-01",
+      "dueDate": "2026-04-15",
+      "progress": 60,
+      "team": ["Maria Santos", "Michael Lee"],
+      "description": "Migrate legacy systems to cloud infrastructure"
+    },
+    {
+      "id": "proj-003",
+      "name": "Data Analytics Dashboard",
+      "client": "DataFlow Systems",
+      "status": "planning",
+      "priority": "medium",
+      "startDate": "2026-02-01",
+      "dueDate": "2026-05-20",
+      "progress": 15,
+      "team": ["James Wilson", "Emily Davis"],
+      "description": "Build comprehensive analytics dashboard for stakeholders"
+    }
+  ],
+  "accountColors": {
+    "TechStart Solutions": "#8b5cf6",
+    "CloudNine Inc": "#06b6d4",
+    "DataFlow Systems": "#10b981"
+  },
+  "checkins": [],
+  "ewsHistory": [],
+  "timesheets": [],
+  "rollCall": {},
+  "capacity": {},
+  "capto": [],
+  "logbook": [
+    {
+      "id": "log-001",
+      "date": "2026-01-28",
+      "type": "meeting",
+      "title": "Weekly Team Sync",
+      "notes": "Discussed project progress and upcoming milestones. All teams on track.",
+      "attendees": ["Alex Rivera", "Maria Santos", "James Wilson"]
+    },
+    {
+      "id": "log-002",
+      "date": "2026-01-27",
+      "type": "decision",
+      "title": "Tech Stack Decision",
+      "notes": "Decided to use React for frontend and Node.js for backend on Mobile App Redesign project.",
+      "attendees": ["Alex Rivera", "Sarah Johnson"]
+    },
+    {
+      "id": "log-003",
+      "date": "2026-01-26",
+      "type": "milestone",
+      "title": "Cloud Migration Phase 1 Complete",
+      "notes": "Successfully migrated database to cloud. Moving to Phase 2: Application migration.",
+      "attendees": ["Maria Santos", "Michael Lee"]
+    }
+  ],
+  "broadcasts": [
+    {
+      "id": "bc-001",
+      "title": "Welcome to Demo Account",
+      "message": "This is a demo account showcasing the LeadershipOS platform capabilities.",
+      "priority": "info",
+      "date": "2026-01-28",
+      "active": true
+    }
+  ],
+  "myDesk": [
+    {
+      "id": "task-001",
+      "title": "Review UI mockups",
+      "description": "Review and provide feedback on new UI mockups for mobile app",
+      "priority": "high",
+      "status": "todo",
+      "assignee": "Sarah Johnson",
+      "dueDate": "2026-01-30",
+      "project": "Mobile App Redesign",
+      "sortOrder": 1
+    },
+    {
+      "id": "task-002",
+      "title": "Set up CI/CD pipeline",
+      "description": "Configure automated testing and deployment pipeline",
+      "priority": "high",
+      "status": "in-progress",
+      "assignee": "Michael Lee",
+      "dueDate": "2026-02-05",
+      "project": "Cloud Migration",
+      "sortOrder": 2
+    },
+    {
+      "id": "task-003",
+      "title": "Prepare quarterly report",
+      "description": "Compile analytics data for Q1 report",
+      "priority": "medium",
+      "status": "todo",
+      "assignee": "James Wilson",
+      "dueDate": "2026-02-10",
+      "project": "Data Analytics Dashboard",
+      "sortOrder": 3
+    },
+    {
+      "id": "task-004",
+      "title": "Code review - Auth module",
+      "description": "Review authentication implementation",
+      "priority": "medium",
+      "status": "todo",
+      "assignee": "Alex Rivera",
+      "dueDate": "2026-01-29",
+      "project": "Mobile App Redesign",
+      "sortOrder": 4
+    },
+    {
+      "id": "task-005",
+      "title": "Test new features",
+      "description": "Complete QA testing on recently deployed features",
+      "priority": "high",
+      "status": "in-progress",
+      "assignee": "Emily Davis",
+      "dueDate": "2026-02-01",
+      "project": "CloudNine Inc",
+      "sortOrder": 5
+    }
+  ],
+  "calendarEvents": [
+    {
+      "id": "event-001",
+      "title": "Sprint Planning",
+      "date": "2026-02-03",
+      "time": "10:00 AM",
+      "type": "meeting",
+      "attendees": ["Alex Rivera", "Sarah Johnson", "Emily Davis"]
+    },
+    {
+      "id": "event-002",
+      "title": "Client Demo",
+      "date": "2026-02-05",
+      "time": "2:00 PM",
+      "type": "presentation",
+      "attendees": ["Maria Santos", "Michael Lee"]
+    },
+    {
+      "id": "event-003",
+      "title": "Team Building Activity",
+      "date": "2026-02-07",
+      "time": "3:00 PM",
+      "type": "social",
+      "attendees": ["All Team"]
+    }
+  ],
+  "evaluations": [],
+  "meta": {
+    "lastBackup": 1738022400000,
+    "appVersion": "1.2",
+    "createdBy": "Demo Account"
+  },
+  "completedMyDesk": [
+    {
+      "id": "task-c001",
+      "title": "Set up development environment",
+      "description": "Configure local dev environment for all team members",
+      "priority": "high",
+      "status": "completed",
+      "assignee": "Michael Lee",
+      "completedDate": "2026-01-25",
+      "project": "Mobile App Redesign"
+    },
+    {
+      "id": "task-c002",
+      "title": "Conduct stakeholder interviews",
+      "description": "Interview key stakeholders for requirements gathering",
+      "priority": "high",
+      "status": "completed",
+      "assignee": "James Wilson",
+      "completedDate": "2026-01-22",
+      "project": "Data Analytics Dashboard"
+    }
+  ],
+  "quickLinks": [
+    {
+      "id": "link-001",
+      "title": "Project Wiki",
+      "url": "https://wiki.example.com",
+      "icon": "book"
+    },
+    {
+      "id": "link-002",
+      "title": "Time Tracker",
+      "url": "https://timetracker.example.com",
+      "icon": "clock"
+    },
+    {
+      "id": "link-003",
+      "title": "Team Calendar",
+      "url": "https://calendar.example.com",
+      "icon": "calendar"
+    }
+  ],
+  "mailboxOrder": ["TechStart Solutions", "CloudNine Inc", "DataFlow Systems"],
+  "garshuNotifications": {
+    "proactiveEnabled": true,
+    "triggers": {
+      "morningBrief": {
+        "enabled": true
+      },
+      "driftNudge": {
+        "enabled": true
+      },
+      "victoryLap": {
+        "enabled": true
+      }
+    }
+  },
+  "settings": {
+    "modules": {
+      "myDesk": true,
+      "pipeline": true,
+      "logbook": true,
+      "broadcast": true,
+      "performance": true,
+      "projects": true,
+      "rollCall": true
+    },
+    "notifications": {
+      "email": true,
+      "push": false
+    },
+    "theme": "light"
+  },
+  "braindump": "Demo account notes:\n\n- Remember to showcase all major features\n- Highlight cloud sync capabilities\n- Demo the authentication flow\n- Show team management features\n\nKey talking points:\n- Supabase integration for secure auth\n- Real-time collaboration features\n- Project tracking and task management\n- Analytics and reporting",
+  "attendanceHistory": {},
+  "snoozedTasks": [],
+  "emailGuide": "Welcome to the demo account!\n\nFeel free to explore all features of LeadershipOS:\n\n1. Team Management - View and manage team members\n2. Projects - Track project progress and milestones\n3. My Desk - Task management and prioritization\n4. Logbook - Record important decisions and meetings\n5. Calendar - Schedule and manage events\n6. Cloud Sync - Push/pull data across devices\n\nAll data here is fictitious for demonstration purposes.",
+  "syncedAt": "2026-01-28T10:00:00.000Z"
+}
