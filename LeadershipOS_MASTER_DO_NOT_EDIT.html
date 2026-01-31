@@ -691,31 +691,33 @@
 
         /* Project Card - Linear Style */
         .project-card-linear {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            border-radius: 12px;
+            background: white;
+            border: 1px solid rgb(226, 232, 240);
+            border-radius: 0.75rem;
             overflow: hidden;
             position: relative;
-            transition: all 0.2s ease-out;
+            transition: all 0.2s ease;
             cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .project-card-linear:hover {
-            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             transform: translateY(-2px);
         }
 
         .project-card-linear:active {
-            transform: scale(0.99);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         body.dark-mode .project-card-linear {
-            background: rgba(30, 32, 40, 0.8);
-            border-color: rgba(255, 255, 255, 0.08);
+            background: rgb(30, 41, 59);
+            border-color: rgb(51, 65, 85);
         }
 
         body.dark-mode .project-card-linear:hover {
-            border-color: rgba(129, 140, 248, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
         }
 
         /* Project Card Gradient Icon */
@@ -749,6 +751,35 @@
             background: linear-gradient(135deg, #475569 0%, #1e293b 100%);
         }
 
+        /* Task Row Styles */
+        .task-row {
+            transition: all 0.2s ease;
+        }
+
+        .task-row:hover {
+            background-color: rgba(248, 250, 252, 0.5);
+        }
+
+        body.dark-mode .task-row:hover {
+            background-color: rgba(30, 41, 59, 0.3);
+        }
+
+        /* Smooth fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
         /* Ultra-Thin Progress Bar */
         .progress-bar-thin {
             position: absolute;
@@ -765,6 +796,7 @@
 
         .progress-bar-thin .fill {
             height: 100%;
+            transition: width 0.3s ease;
             border-radius: 0 2px 2px 0;
             transition: width 0.3s ease-out;
         }
@@ -779,6 +811,70 @@
 
         .progress-bar-thin .fill.amber {
             background: linear-gradient(90deg, #f59e0b, #ea580c);
+        }
+
+        /* Project Task Context Menu */
+        #projectTaskContextMenu {
+            position: fixed;
+            z-index: 9999;
+            background: white;
+            border: 1px solid rgb(226, 232, 240);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 0.25rem;
+            min-width: 180px;
+            display: none;
+        }
+
+        body.dark-mode #projectTaskContextMenu {
+            background: rgb(30, 41, 59);
+            border-color: rgb(51, 65, 85);
+        }
+
+        #projectTaskContextMenu button {
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgb(51, 65, 85);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.15s ease;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        body.dark-mode #projectTaskContextMenu button {
+            color: rgb(226, 232, 240);
+        }
+
+        #projectTaskContextMenu button:hover {
+            background: rgb(241, 245, 249);
+            color: rgb(99, 102, 241);
+        }
+
+        body.dark-mode #projectTaskContextMenu button:hover {
+            background: rgb(51, 65, 85);
+            color: rgb(129, 140, 248);
+        }
+
+        #projectTaskContextMenu button.danger:hover {
+            background: rgb(254, 242, 242);
+            color: rgb(239, 68, 68);
+        }
+
+        body.dark-mode #projectTaskContextMenu button.danger:hover {
+            background: rgb(127, 29, 29);
+            color: rgb(252, 165, 165);
+        }
+
+        #projectTaskContextMenu button svg {
+            width: 1rem;
+            height: 1rem;
         }
 
         .progress-bar-thin .fill.rose {
@@ -1534,16 +1630,16 @@
 
         .desk-card {
             background: #ffffff;
-            border: 1px solid rgba(15, 23, 42, 0.06);
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 14px;
-            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
         }
 
         .desk-card:hover {
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
-            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
         }
 
         /* Drawer Card Specifics: Slightly greyed out when not hovered */
@@ -3565,8 +3661,8 @@
             </div>
 
             <!-- MAILBOX VIEW -->
-            <div id="mailboxView">
-                <div class="flex justify-between items-center mb-6">
+            <div id="mailboxView" class="flex flex-col" style="height: calc(100vh - 220px);">
+                <div class="flex justify-between items-center mb-6 flex-shrink-0">
                     <h2 class="text-2xl font-bold text-slate-800">Team Mailbox</h2>
                     <div class="flex items-center bg-white px-3 py-2 rounded-lg shadow-sm border border-slate-200">
                         <span class="text-sm text-slate-500 mr-2 font-medium">Sort by:</span>
@@ -3579,7 +3675,7 @@
                         </select>
                     </div>
                 </div>
-                <div id="mailboxGrid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+                <div id="mailboxGrid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4 overflow-y-auto flex-1 pr-2"></div>
             </div>
 
             <!-- MY DESK VIEW -->
@@ -3778,140 +3874,140 @@
                 </div>
             </div>
 
-            <div id="projectsView" class="hidden fade-in">
-                <!-- Header Section -->
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                    <div>
-                        <h2 class="text-3xl font-extrabold tracking-tight flex items-center gap-3">
-                            <span
-                                class="p-2.5 bg-gradient-to-br from-indigo-500 to-violet-600 text-white rounded-xl shadow-lg shadow-indigo-500/25">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            <div id="projectsView" class="hidden fade-in flex flex-col" style="height: calc(100vh - 220px);">
+                <!-- Header Section (Fixed) -->
+                <div class="flex-shrink-0 mb-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-3">
+                                <span
+                                    class="p-2 bg-gradient-to-br from-indigo-500 to-violet-600 text-white rounded-xl shadow-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                    </svg>
+                                </span>
+                                Projects
+                            </h2>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage high-level goals and track progress</p>
+                        </div>
+
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <!-- Area Filter -->
+                            <div class="relative">
+                                <select id="projectAreaFilter" onchange="renderProjectsView()"
+                                    class="appearance-none bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 py-2 pl-3 pr-9 rounded-lg text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 transition-all">
+                                    <option value="all">All Areas</option>
+                                </select>
+                                <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- New Project Button -->
+                            <button onclick="openProjectModal()"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-md transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                                 </svg>
-                            </span>
-                            <span class="linear-gradient-text">Projects</span>
-                        </h2>
-                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-2 ml-1">Manage high-level goals and
-                            track progress.</p>
+                                New Project
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Area (Scrollable) -->
+                <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Projects Grid (4 columns on xl) -->
+                    <div id="projectsGrid"
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8">
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <!-- View Toggle (Segmented Control) -->
-                        <div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
-                            <button id="projectViewGrid" onclick="showGridView()"
-                                class="px-3 py-1.5 text-xs font-bold rounded-md bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                                </svg>
-                            </button>
-                            <button id="projectViewList"
-                                class="px-3 py-1.5 text-xs font-bold rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                            </button>
-                            <button id="projectViewTimeline" onclick="toggleTimelineView()"
-                                class="px-3 py-1.5 text-xs font-bold rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <!-- Area Filter -->
-                        <div class="relative">
-                            <select id="projectAreaFilter" onchange="renderProjectsView()"
-                                class="appearance-none bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 py-2 pl-4 pr-10 rounded-lg text-sm font-semibold focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-500/50 transition-all">
-                                <option value="all">All Areas</option>
-                            </select>
-                            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </div>
-                        </div>
-
-                        <!-- New Project Button (Primary CTA with Glow) -->
-                        <button onclick="openProjectModal()"
-                            class="btn-squish btn-primary-glow bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    <!-- Archived Projects Section -->
+                    <details class="group mt-6">
+                        <summary
+                            class="flex items-center gap-2 cursor-pointer text-slate-400 font-bold text-xs uppercase tracking-wider select-none hover:text-indigo-500 transition-colors mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-3.5 w-3.5 transition-transform group-open:rotate-90" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                             </svg>
-                            New Project
-                        </button>
+                            Archived Projects
+                        </summary>
+                        <div id="archivedProjectsGrid"
+                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 opacity-50 hover:opacity-70 transition-opacity">
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Project Task Context Menu -->
+            <div id="projectTaskContextMenu">
+                <button onclick="projectTaskContextAction('edit')">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    <span>Edit</span>
+                </button>
+                <button onclick="projectTaskContextAction('moveToDesk')">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>Move to Desk</span>
+                </button>
+                <button onclick="projectTaskContextAction('delete')" class="danger">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span>Delete</span>
+                </button>
+            </div>
+
+            <!-- Project Task Edit Modal -->
+            <div id="projectTaskEditModal" class="modal opacity-0 pointer-events-none fixed inset-0 z-[80] flex items-center justify-center p-4">
+                <div class="modal-overlay absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity" onclick="closeProjectTaskEditModal()"></div>
+                <div class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col">
+                    <!-- Header -->
+                    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-white">Edit Task</h3>
                     </div>
-                </div>
-
-                <!-- Projects Grid (4 columns on xl) -->
-                <div id="projectsGrid"
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-12">
-                </div>
-
-                <!-- Timeline View -->
-                <div id="projectTimelineView"
-                    class="hidden flex-col h-[calc(100vh-200px)] bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden relative mb-12">
-                    <div
-                        class="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shrink-0 z-40">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center bg-slate-100 dark:bg-slate-700 rounded-md p-0.5">
-                                <button onclick="changeTimelineMonth(-1)"
-                                    class="p-1 hover:bg-white dark:hover:bg-slate-600 rounded text-slate-500 transition-shadow"><svg
-                                        class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 19l-7-7 7-7" />
-                                    </svg></button>
-                                <span id="timelineMonthLabel"
-                                    class="px-3 text-xs font-bold text-slate-700 dark:text-slate-200 w-32 text-center uppercase tracking-wider">Loading...</span>
-                                <button onclick="changeTimelineMonth(1)"
-                                    class="p-1 hover:bg-white dark:hover:bg-slate-600 rounded text-slate-500 transition-shadow"><svg
-                                        class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg></button>
+                    
+                    <!-- Content -->
+                    <div class="px-6 py-4 overflow-y-auto flex-1">
+                        <div class="space-y-4">
+                            <!-- Title -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Task Title</label>
+                                <input type="text" id="projectTaskEditTitle" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all" placeholder="Task name...">
                             </div>
-                            <button onclick="renderTimeline()"
-                                class="text-xs text-slate-500 hover:text-violet-600 flex items-center gap-1">Refresh</button>
+                            
+                            <!-- Notes (Collapsible) -->
+                            <div>
+                                <button onclick="toggleProjectTaskEditNotes()" class="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 hover:text-indigo-500 transition-colors">
+                                    <svg id="projectTaskEditNotesIcon" class="w-4 h-4 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                    <span>Notes</span>
+                                </button>
+                                <div id="projectTaskEditNotesContainer" class="hidden">
+                                    <textarea id="projectTaskEditNotes" rows="4" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all resize-none" placeholder="Add notes..."></textarea>
+                                </div>
+                            </div>
                         </div>
-                        <select id="timelineProjectFilter" onchange="renderTimeline()"
-                            class="text-xs border-none bg-transparent font-semibold text-slate-600 dark:text-slate-300 focus:ring-0 cursor-pointer">
-                            <option value="all">All Projects</option>
-                        </select>
                     </div>
-                    <div class="flex-1 overflow-auto relative custom-scrollbar flex flex-col">
-                        <div id="timelineHeader"
-                            class="sticky top-0 z-30 flex bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-500">
-                        </div>
-                        <div id="timelineBody" class="flex-1 bg-white dark:bg-slate-900 relative">
-                        </div>
+                    
+                    <!-- Footer -->
+                    <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-3">
+                        <button onclick="closeProjectTaskEditModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Cancel</button>
+                        <button onclick="saveProjectTaskEdit()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg text-sm font-bold shadow-md transition-all">Save</button>
                     </div>
                 </div>
-
-                <!-- Archived Projects Section -->
-                <details class="group">
-                    <summary
-                        class="flex items-center gap-2 cursor-pointer text-slate-400 font-bold text-xs uppercase tracking-wider select-none hover:text-indigo-500 transition-colors mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-3.5 w-3.5 transition-transform group-open:rotate-90" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                        Archived Projects
-                    </summary>
-                    <div id="archivedProjectsGrid"
-                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 opacity-50 hover:opacity-70 transition-opacity">
-                    </div>
-                </details>
             </div>
 
             <div id="projectPlannerModal"
@@ -4194,7 +4290,7 @@
                             Delete
                         </button>
                         <button onclick="closeProjectPlanner()"
-                            class="btn-squish btn-primary-glow bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold">Done</button>
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-md transition-all">Done</button>
                     </div>
                 </div>
             </div>
@@ -4464,9 +4560,9 @@
             </div>
 
             <!-- LOGBOOK VIEW -->
-            <div id="logbookView" class="hidden">
-                <div class="max-w-7xl mx-auto">
-                    <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-6 gap-4">
+            <div id="logbookView" class="hidden flex flex-col" style="height: calc(100vh - 220px);">
+                <div class="max-w-7xl mx-auto flex flex-col flex-1 overflow-hidden">
+                    <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-6 gap-4 flex-shrink-0">
                         <div>
                             <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
                                 Team Logbook
@@ -4498,7 +4594,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex-shrink-0">
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
 
                             <div class="md:col-span-4 relative">
@@ -4568,7 +4664,7 @@
                     </div>
 
                     <div id="logbookBulkDeleteControls"
-                        class="bg-red-50 p-3 rounded-xl mb-4 hidden flex justify-between items-center border border-red-200">
+                        class="bg-red-50 p-3 rounded-xl mb-4 hidden flex justify-between items-center border border-red-200 flex-shrink-0">
                         <p id="logbookSelectedCount" class="text-red-700 font-bold ml-2">0 selected</p>
                         <button onclick="deleteSelectedLogEntries()"
                             class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg flex items-center text-sm shadow-sm">
@@ -4581,24 +4677,24 @@
                         </button>
                     </div>
 
-                    <div class="space-y-4 overflow-y-auto" style="max-height: calc(100vh - 400px);"
+                    <div class="space-y-4 overflow-y-auto flex-1 pr-2 custom-scrollbar"
                         id="logbookEntryList"></div>
                 </div>
             </div>
 
             <!-- BROADCAST VIEW -->
-            <div id="broadcastView" class="hidden">
-                <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+            <div id="broadcastView" class="hidden flex flex-col" style="height: calc(100vh - 220px);">
+                <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4 flex-shrink-0">
                     <h2 class="text-2xl font-bold text-slate-800">Broadcast Tracker</h2>
                     <div class="flex space-x-2 self-start md:self-center">
                         <button onclick="toggleBroadcastSelectionMode()" id="broadcastSelectBtn"
-                            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold flex items-center shadow-md transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                            class="desk-ghost-btn flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
-                            Select for Archive
+                            Select / Archive
                         </button>
                         <button onclick="openBroadcastModal()"
                             class="bg-hub-600 hover:bg-hub-700 text-white px-4 py-2 rounded-lg font-bold flex items-center shadow-md transition">
@@ -4613,7 +4709,7 @@
                 </div>
 
                 <div
-                    class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4 bg-white p-3 rounded-xl shadow-sm border border-slate-200">
+                    class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4 bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex-shrink-0">
                     <div class="flex-1 relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -4636,7 +4732,7 @@
                 </div>
 
                 <div id="broadcastBulkDeleteControls"
-                    class="bg-red-100 p-3 rounded-xl mb-4 hidden justify-between items-center border border-red-200">
+                    class="bg-red-100 p-3 rounded-xl mb-4 hidden justify-between items-center border border-red-200 flex-shrink-0">
                     <p id="broadcastSelectedCount" class="text-red-700 font-bold">0 selected</p>
                     <button onclick="deleteSelectedBroadcasts()"
                         class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg flex items-center">
@@ -4649,7 +4745,7 @@
                     </button>
                 </div>
 
-                <div class="space-y-4" id="broadcastList"></div>
+                <div class="space-y-4 overflow-y-auto flex-1 pr-2 custom-scrollbar" id="broadcastList"></div>
             </div>
 
             <!-- PERFORMANCE VIEW -->
@@ -8337,7 +8433,10 @@
                     if (loadingState) loadingState.style.display = 'flex';
                     if (formContainer) formContainer.style.display = 'none';
 
-                    // 2. Wait, then fade out
+                    // 2. Auto-sync user profile from Supabase
+                    await syncUserProfileFromSupabase();
+
+                    // 3. Wait, then fade out
                     setTimeout(() => {
                         if (screen) {
                             screen.style.opacity = '0';
@@ -8409,9 +8508,33 @@
                     const screen = document.getElementById('loginScreen');
                     screen.style.opacity = '0';
 
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         screen.style.display = 'none';
-                        showToast("Identity Verified. Decrypting Local Data...", "success");
+                        
+                        // Check if this is a new device (no local data)
+                        const hasLocalData = localStorage.getItem('leadershipOSData');
+                        
+                        if (!hasLocalData) {
+                            // New device - load from cloud
+                            console.log('🆕 New device login - loading from cloud');
+                            showToast("Loading your data from cloud...", "info");
+                            const loaded = await loadFromDatabase();
+                            
+                            if (loaded) {
+                                showToast("✅ Data loaded successfully!", "success");
+                                // Refresh UI
+                                if (typeof renderHubView === 'function') renderHubView();
+                                if (typeof renderPulseView === 'function') renderPulseView();
+                                if (typeof applyAccountColors === 'function') applyAccountColors();
+                            } else {
+                                // No cloud data found, load empty state
+                                loadData();
+                                showToast("Identity Verified. Welcome!", "success");
+                            }
+                        } else {
+                            // Existing device - data already loaded
+                            showToast("Identity Verified. Decrypting Local Data...", "success");
+                        }
                     }, 500);
                 } else {
                     throw new Error("Invalid credentials");
@@ -8503,6 +8626,47 @@
             saveData();
             applyModuleSettings();
             showToast("Workspace modules updated", "success");
+        }
+
+        // Auto-sync user profile from Supabase session
+        async function syncUserProfileFromSupabase() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session?.user?.email) {
+                    if (!appData.userProfile) {
+                        appData.userProfile = {};
+                    }
+                    
+                    // Get email from Supabase user
+                    appData.userProfile.email = session.user.email;
+                    
+                    // Get name from user metadata or derive from email
+                    const nameFromMetadata = session.user.user_metadata?.name || 
+                                            session.user.user_metadata?.full_name;
+                    if (nameFromMetadata) {
+                        appData.userProfile.name = nameFromMetadata;
+                    } else {
+                        // Derive from email
+                        const nameFromEmail = session.user.email.split('@')[0];
+                        appData.userProfile.name = nameFromEmail.charAt(0).toUpperCase() + nameFromEmail.slice(1);
+                    }
+                    
+                    // Update UI if settings panel is open
+                    const emailInput = document.getElementById('set_userEmail');
+                    if (emailInput) {
+                        emailInput.value = appData.userProfile.email;
+                    }
+                    
+                    // Save and update display
+                    saveData();
+                    renderUserProfile();
+                    
+                    return true;
+                }
+            } catch (error) {
+                console.error('Error syncing user profile from Supabase:', error);
+            }
+            return false;
         }
 
         function saveUserProfile() {
@@ -11778,6 +11942,7 @@
         saveData = function (skipRender = false) {
             originalSaveData(skipRender); // 1. Run the original localStorage save (Instant)
             LocalBackup.save(); // 2. Trigger the hard drive save (Async/Background)
+            triggerAutoSave(); // 3. Trigger cloud database auto-save (Debounced 20s)
         };
 
         function migrateData() {
@@ -12057,6 +12222,9 @@
                     return;
                 }
 
+                // Auto-sync user profile from Supabase before pushing
+                await syncUserProfileFromSupabase();
+
                 // Disable button and show loading state
                 btn.disabled = true;
                 const originalText = btn.querySelector('span').innerText;
@@ -12209,6 +12377,9 @@
 
                 if (data.meta) appData.meta = data.meta;
 
+                // Auto-sync user profile from Supabase after pulling
+                await syncUserProfileFromSupabase();
+
                 // Save all changes
                 saveData();
 
@@ -12264,6 +12435,293 @@
                 }
             } catch (error) {
                 console.error('Error updating cloud sync status:', error);
+            }
+        }
+
+        // ==========================================
+        // CLOUD AUTO-SAVE TO DATABASE
+        // ==========================================
+        
+        let autoSaveTimer = null;
+        let isAutoSaving = false;
+        const AUTO_SAVE_DELAY = 20000; // 20 seconds
+
+        async function autoSaveToDatabase() {
+            if (isAutoSaving) return; // Prevent concurrent saves
+            
+            try {
+                isAutoSaving = true;
+                
+                // Check if user is authenticated
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    console.log('⏭️ Auto-save skipped: No session');
+                    return;
+                }
+
+                // SAFETY CHECK 1: Don't save empty data
+                if (!appData.team || appData.team.length === 0) {
+                    console.warn('🛡️ Auto-save blocked: No team data (preventing empty data overwrite)');
+                    return;
+                }
+
+                // SAFETY CHECK 2: Check if cloud has data but local is empty
+                const { data: existing } = await supabaseClient
+                    .from('user_data')
+                    .select('content')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (existing && existing.content && existing.content.team && existing.content.team.length > 0) {
+                    // Cloud has data
+                    if (!appData.team || appData.team.length === 0) {
+                        console.error('🚨 CRITICAL: Prevented overwriting cloud data with empty local data!');
+                        showToast("⚠️ Auto-save blocked: Local data appears empty", "error");
+                        return;
+                    }
+                }
+
+                // Prepare data
+                const data = {
+                    version: '1.2',
+                    todos: appData.todos,
+                    team: appData.team,
+                    pulseCheckData: appData.pulseCheckData,
+                    projects: appData.projects,
+                    accountColors: appData.accountColors,
+                    checkins: appData.checkins,
+                    ewsHistory: appData.ewsHistory,
+                    timesheets: appData.timesheets,
+                    rollCall: appData.rollCall,
+                    capacity: appData.capacity,
+                    capto: appData.capto,
+                    logbook: appData.logbook,
+                    broadcasts: appData.broadcasts,
+                    myDesk: appData.myDesk,
+                    calendarEvents: appData.calendarEvents,
+                    evaluations: appData.evaluations,
+                    meta: appData.meta,
+                    completedMyDesk: appData.completedMyDesk,
+                    quickLinks: appData.quickLinks,
+                    mailboxOrder: appData.mailboxOrder,
+                    garshuNotifications: appData.garshuNotifications,
+                    settings: appData.settings,
+                    braindump: localStorage.getItem('leadership_os_braindump') || '',
+                    attendanceHistory: getAttendanceHistory(),
+                    snoozedTasks: JSON.parse(localStorage.getItem('leadership_os_snoozed') || '[]'),
+                    emailGuide: localStorage.getItem('leadership_os_email_guide') || '',
+                    syncedAt: new Date().toISOString()
+                };
+
+                // Save to database
+                const { error } = await supabaseClient
+                    .from('user_data')
+                    .upsert({
+                        id: session.user.id,
+                        content: data,
+                        updated_at: new Date().toISOString()
+                    });
+
+                if (error) throw error;
+
+                // Update status
+                const now = new Date().toISOString();
+                localStorage.setItem('leadership_os_last_cloud_sync', now);
+                localStorage.setItem('leadership_os_has_synced', 'true'); // Mark that we've synced
+                updateCloudSyncStatus();
+
+                console.log('✅ Auto-saved to cloud database');
+
+            } catch (error) {
+                console.error('❌ Auto-save error:', error);
+            } finally {
+                isAutoSaving = false;
+            }
+        }
+
+        // Debounced auto-save trigger
+        function triggerAutoSave() {
+            // Clear existing timer
+            if (autoSaveTimer) {
+                clearTimeout(autoSaveTimer);
+            }
+
+            // Start new timer
+            autoSaveTimer = setTimeout(() => {
+                autoSaveToDatabase();
+            }, AUTO_SAVE_DELAY);
+        }
+
+        // Load data from database on page load
+        async function loadFromDatabase() {
+            try {
+                console.log('🔍 Checking for cloud data...');
+                
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    console.log('⏭️ No session found, skipping cloud load');
+                    return false;
+                }
+
+                console.log('✅ Session found:', session.user.email);
+
+                const { data, error } = await supabaseClient
+                    .from('user_data')
+                    .select('content')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (error) {
+                    if (error.code === 'PGRST116') {
+                        // No data found, this is okay for first-time users
+                        console.log('ℹ️ No cloud data found (first time user or no sync yet)');
+                        return false;
+                    }
+                    console.error('❌ Database error:', error);
+                    throw error;
+                }
+
+                if (data && data.content) {
+                    console.log('📦 Found cloud data');
+                    
+                    // Validate that cloud data has content
+                    if (!data.content.team || data.content.team.length === 0) {
+                        console.warn('⚠️ Cloud data appears empty, keeping local data');
+                        return false;
+                    }
+
+                    console.log('📊 Cloud data has', data.content.team.length, 'team members');
+
+                    // Check localStorage
+                    const localData = localStorage.getItem('leadershipOSData');
+                    const hasLocalData = localData && JSON.parse(localData).team && JSON.parse(localData).team.length > 0;
+
+                    // SIMPLIFIED LOGIC: If on new device (no local data), always load from cloud
+                    if (!hasLocalData) {
+                        console.log('🆕 New device detected, loading from cloud');
+                        showToast("Loading your data from cloud...", "info");
+                    } else {
+                        // Check timestamps only if both have data
+                        const dbSyncTime = data.content.syncedAt ? new Date(data.content.syncedAt).getTime() : 0;
+                        const localSyncTime = localStorage.getItem('leadership_os_last_cloud_sync') 
+                            ? new Date(localStorage.getItem('leadership_os_last_cloud_sync')).getTime() 
+                            : 0;
+
+                        console.log('🕐 Cloud sync time:', new Date(dbSyncTime).toLocaleString());
+                        console.log('🕐 Local sync time:', localSyncTime ? new Date(localSyncTime).toLocaleString() : 'Never');
+
+                        if (dbSyncTime <= localSyncTime) {
+                            console.log('✅ Local data is up to date');
+                            return false;
+                        }
+
+                        console.log('☁️ Cloud data is newer, loading...');
+                    }
+                    
+                    // Restore all data
+                    if (data.content.todos) appData.todos = data.content.todos;
+                    if (data.content.team) appData.team = data.content.team;
+                    if (data.content.pulseCheckData) appData.pulseCheckData = data.content.pulseCheckData;
+                    if (data.content.checkins) appData.checkins = data.content.checkins;
+                    if (data.content.ewsHistory) appData.ewsHistory = data.content.ewsHistory;
+                    if (data.content.timesheets) appData.timesheets = data.content.timesheets;
+                    if (data.content.rollCall) appData.rollCall = data.content.rollCall;
+                    if (data.content.capacity) appData.capacity = data.content.capacity;
+                    if (data.content.capto) appData.capto = data.content.capto;
+                    if (data.content.logbook) appData.logbook = data.content.logbook;
+                    if (data.content.broadcasts) appData.broadcasts = data.content.broadcasts;
+                    if (data.content.myDesk) appData.myDesk = data.content.myDesk;
+                    if (data.content.calendarEvents) appData.calendarEvents = data.content.calendarEvents;
+                    if (data.content.evaluations) appData.evaluations = data.content.evaluations;
+                    if (data.content.completedMyDesk) appData.completedMyDesk = data.content.completedMyDesk;
+                    if (data.content.quickLinks) appData.quickLinks = data.content.quickLinks;
+                    if (data.content.mailboxOrder) appData.mailboxOrder = data.content.mailboxOrder;
+                    if (data.content.garshuNotifications) appData.garshuNotifications = data.content.garshuNotifications;
+                    if (data.content.settings) appData.settings = data.content.settings;
+                    if (data.content.projects) appData.projects = data.content.projects;
+                    if (data.content.accountColors) appData.accountColors = data.content.accountColors;
+                    if (data.content.meta) appData.meta = data.content.meta;
+
+                    // Restore localStorage items
+                    if (data.content.braindump) localStorage.setItem('leadership_os_braindump', data.content.braindump);
+                    if (data.content.snoozedTasks) localStorage.setItem('leadership_os_snoozed', JSON.stringify(data.content.snoozedTasks));
+                    if (data.content.emailGuide) localStorage.setItem('leadership_os_email_guide', data.content.emailGuide);
+                    if (data.content.syncedAt) localStorage.setItem('leadership_os_last_cloud_sync', data.content.syncedAt);
+
+                    // Save to localStorage
+                    saveData();
+                    
+                    console.log('✅ Successfully loaded from cloud');
+                    showToast("✅ Loaded data from cloud", "success");
+                    
+                    return true;
+                }
+
+                return false;
+            } catch (error) {
+                console.error('💥 Critical error loading from database:', error);
+                showToast("⚠️ Error loading from cloud, using local data", "error");
+                return false;
+            }
+        }
+
+        // Background cloud sync check (non-blocking)
+        async function checkCloudForUpdates() {
+            try {
+                // Wait a bit before checking (let page load first)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                console.log('🔄 Checking cloud for updates (background)...');
+                
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    console.log('⏭️ No session, skipping cloud check');
+                    return;
+                }
+
+                const { data, error } = await supabaseClient
+                    .from('user_data')
+                    .select('content')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (error) {
+                    if (error.code === 'PGRST116') {
+                        console.log('ℹ️ No cloud data yet');
+                        return;
+                    }
+                    throw error;
+                }
+
+                if (data && data.content && data.content.team && data.content.team.length > 0) {
+                    // Compare timestamps
+                    const dbSyncTime = data.content.syncedAt ? new Date(data.content.syncedAt).getTime() : 0;
+                    const localSyncTime = localStorage.getItem('leadership_os_last_cloud_sync') 
+                        ? new Date(localStorage.getItem('leadership_os_last_cloud_sync')).getTime() 
+                        : 0;
+
+                    if (dbSyncTime > localSyncTime) {
+                        console.log('☁️ Cloud has newer data, updating...');
+                        showToast("📥 Updating from cloud...", "info");
+                        
+                        // Load from cloud
+                        const loaded = await loadFromDatabase();
+                        
+                        if (loaded) {
+                            // Refresh UI
+                            if (typeof renderHubView === 'function') renderHubView();
+                            if (typeof renderPulseView === 'function') renderPulseView();
+                            if (typeof applyAccountColors === 'function') applyAccountColors();
+                            
+                            showToast("✅ Updated from cloud", "success");
+                        }
+                    } else {
+                        console.log('✅ Local data is up to date');
+                    }
+                }
+            } catch (error) {
+                console.error('Background cloud check error:', error);
+                // Silent fail - don't bother user
             }
         }
 
@@ -13917,14 +14375,8 @@
                 const returnedClass = t.isReturned ? 'returned-badge-glow' : '';
 
                 // STAGGER APPLIED HERE
-                const dragIndicator = `<div class="drag-indicator absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/>
-                    </svg>
-                </div>`;
                 const card = `
-            <div data-id="${t.id}" class="${(animate && !t.isReturned) ? 'stagger-item' : ''} task-card-container ${returnedClass} p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group relative mb-3 border-l-4 border-hub-500 cursor-move" style="animation-delay: ${index * 30}ms">
-                ${dragIndicator}
+            <div data-id="${t.id}" class="${(animate && !t.isReturned) ? 'stagger-item' : ''} task-card-container ${returnedClass} p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 group relative mb-3 cursor-move" style="animation-delay: ${index * 30}ms">
                 <div class="flex justify-between items-start mb-2">
                     <div class="flex flex-col gap-1">
                         <h3 class="font-bold text-slate-800 dark:text-slate-100 leading-tight">${t.title}</h3>
@@ -13963,7 +14415,7 @@
                     `<input type="checkbox" ${isSelected ? 'checked' : ''} onclick="toggleCompletedTaskSelection('${t.id}')" class="mr-3 w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">` : '';
 
                 const completedCard = `
-            <div class="${animate ? 'stagger-item' : ''} ${isSelected ? 'ring-2 ring-green-500' : ''} desk-card border-l-4 border-green-500 mb-3" style="animation-delay: ${index * 30}ms">
+            <div class="${animate ? 'stagger-item' : ''} ${isSelected ? 'ring-2 ring-green-500' : ''} desk-card shadow-md hover:shadow-xl transition-all duration-200 mb-3" style="animation-delay: ${index * 30}ms">
                 <div class="flex justify-between items-start mb-2">
                     <div class="flex items-center flex-1">
                         ${checkboxHtml}
@@ -14264,8 +14716,6 @@
             const now = new Date();
             const todayStr = now.toLocaleDateString('en-CA'); // YYYY-MM-DD
 
-            console.log(`[NotifCheck] Running at ${now.toLocaleTimeString()}`);
-
             appData.myDesk.forEach(task => {
                 // Skip if no scheduled time
                 if (!task.scheduledTime) return;
@@ -14287,9 +14737,6 @@
 
                 const diffMs = taskTime - now;
                 const diffMins = diffMs / 60000;
-
-                // Log tasks being checked
-                console.log(`[NotifCheck] "${task.title}" scheduled ${taskTime.toLocaleTimeString()}, diff: ${diffMins.toFixed(1)} min, notified: ${task.notifiedAt ? 'yes' : 'no'}`);
 
                 // Notify AT the scheduled time (within 1.5 minute window: -0.5 to +1 minute)
                 // This fires when the time arrives or just passed
@@ -16186,13 +16633,12 @@
                 const label = getTimelineLabel(e.date);
                 if (label !== currentLabel) {
                     currentLabel = label;
-                    html += `<div class="sticky top-0 z-10 bg-slate-50/95 dark:bg-[#0e1015]/95 backdrop-blur-sm py-2 px-1 mb-2 mt-4 border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">${label}</div>`;
+                    html += `<div class="sticky top-0 z-10 bg-slate-50/95 dark:bg-[#0e1015]/95 backdrop-blur-sm py-2 px-3 mb-2 mt-4 border-b border-slate-200 dark:border-slate-800 rounded-lg text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">${label}</div>`;
                 }
 
                 // Premium Card Styles
                 let badgeClass = 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400';
                 let icon = '📝';
-                let borderClass = 'border-l-4 border-slate-300 dark:border-slate-600'; // Default Note
 
                 if (e.type === 'issue') {
                     badgeClass = 'bg-red-50 text-red-700 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900/50';
@@ -16241,7 +16687,7 @@
                 let parsedNotes = e.notes.replace(/@(\w+)/g, '<span class="text-hub-600 dark:text-hub-400 font-bold">@$1</span>');
 
                 html += `
-            <div class="stagger-item group relative bg-white dark:bg-slate-800/50 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-5 mb-3 hover:shadow-md transition-all ${borderClass}" style="animation-delay: ${index * 30}ms">
+            <div class="stagger-item group relative bg-white dark:bg-slate-800/50 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 p-5 mb-3 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200" style="animation-delay: ${index * 30}ms">
                 <div class="flex items-start">
                     ${selectBox}
                     <div class="flex-1">
@@ -16766,7 +17212,7 @@
             </button>` : '';
 
                 list.innerHTML += `
-            <div class="stagger-item bg-white rounded-lg shadow-sm border border-slate-200 p-4 ${isComp ? '' : 'border-l-4 border-yellow-500'}" style="animation-delay: ${index * 30}ms">
+            <div class="stagger-item bg-white rounded-xl shadow-md border border-slate-200 p-4 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200" style="animation-delay: ${index * 30}ms">
                 <div class="flex justify-between items-start">
                     <div class="flex items-center">
                         ${selectBox}
@@ -16796,7 +17242,18 @@
         function toggleBroadcastSelectionMode() {
             broadcastSelectionMode = !broadcastSelectionMode;
             selectedBroadcasts = [];
-            document.getElementById('broadcastSelectBtn').textContent = broadcastSelectionMode ? 'Cancel' : 'Select for Archive';
+            const btn = document.getElementById('broadcastSelectBtn');
+            if (broadcastSelectionMode) {
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg><span>Cancel</span>`;
+                btn.className = "desk-ghost-btn flex items-center gap-2";
+            } else {
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg><span>Select / Archive</span>`;
+                btn.className = "desk-ghost-btn flex items-center gap-2";
+            }
             document.getElementById('broadcastBulkDeleteControls').classList.toggle('hidden', !broadcastSelectionMode);
             renderBroadcast();
         }
@@ -20502,10 +20959,27 @@ ${JSON.stringify(context, null, 2)}`;
             messages.scrollTop = messages.scrollHeight;
         }
 
-        window.onload = function () {
+        window.onload = async function () {
             SoundEngine.init();
             initDarkMode();
-            loadData();
+            
+            // Check if we have local data
+            const hasLocalData = localStorage.getItem('leadershipOSData');
+            
+            if (hasLocalData) {
+                // EXISTING DEVICE: Load from localStorage immediately (instant!)
+                console.log('⚡ Loading from localStorage (instant)');
+                loadData();
+                
+                // Check cloud for updates in background (non-blocking)
+                checkCloudForUpdates();
+            } else {
+                // NEW DEVICE: Don't load yet - wait for login
+                // The login function will handle loading from cloud after authentication
+                console.log('🆕 New device detected - waiting for login');
+                loadData(); // Load empty state for now
+            }
+            
             loadGeminiKey();
             startOsClock();
             checkSnoozedTasks();
@@ -22062,9 +22536,10 @@ Best,
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <label class="block mb-2">
                                 <span class="text-sm font-bold text-slate-700 block mb-2">User ID / Email</span>
-                                <input type="text" id="set_userEmail" value=""
-                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-dcx-blue focus:border-dcx-blue text-sm"
-                                    placeholder="admin@leados.com" onchange="saveUserProfile()">
+                                <input type="text" id="set_userEmail" value="" readonly
+                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg bg-slate-100 text-slate-600 text-sm cursor-not-allowed"
+                                    placeholder="Automatically synced from your login">
+                                <p class="text-xs text-slate-500 mt-2">✨ Automatically synced from your login</p>
                             </label>
                         </div>
                     </div>
@@ -22309,6 +22784,15 @@ Best,
                                 class="text-center text-xs font-medium text-slate-400 flex items-center justify-center gap-1">
                                 <span class="w-2 h-2 rounded-full bg-slate-300"></span>
                                 <span id="cloudSyncStatusText">Never synced</span>
+                            </div>
+                            
+                            <div class="mt-2 pt-2 border-t border-blue-100">
+                                <div class="text-center text-xs text-slate-500 flex items-center justify-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    <span>Auto-save: Every 20 seconds</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -27298,7 +27782,7 @@ Best,
             const confirmBtn = document.getElementById('premCalConfirmRange');
 
             // Show/hide toggle based on input type (only for myDeskDueDate, broadcastDueDate, newProjDue, and task date inputs)
-            if (inputId === 'myDeskDueDate' || inputId === 'broadcastDueDate' || inputId === 'newProjDue' || (inputId && inputId.startsWith('task-'))) {
+            if (inputId === 'myDeskDueDate' || inputId === 'broadcastDueDate' || inputId === 'newProjDue' || (inputId && (inputId.startsWith('task-') || inputId.startsWith('project-task-date-')))) {
                 toggleContainer.classList.remove('hidden');
                 // Initialize mode based on existing range data
                 const rangeStart = input.getAttribute('data-range-start');
@@ -27364,10 +27848,10 @@ Best,
             const cal = document.getElementById('premiumCalendar');
             const targetInput = document.getElementById(premCalTargetInputId);
 
-            // If click is NOT inside calendar AND NOT on the input trigger
+                // If click is NOT inside calendar AND NOT on the input trigger
             if (!cal.contains(e.target) && e.target !== targetInput) {
                 // If in range mode with both dates selected, confirm the range
-                const isRangeInput = premCalTargetInputId === 'myDeskDueDate' || premCalTargetInputId === 'broadcastDueDate' || premCalTargetInputId === 'newProjDue' || (premCalTargetInputId && premCalTargetInputId.startsWith('task-'));
+                const isRangeInput = premCalTargetInputId === 'myDeskDueDate' || premCalTargetInputId === 'broadcastDueDate' || premCalTargetInputId === 'newProjDue' || (premCalTargetInputId && (premCalTargetInputId.startsWith('task-') || premCalTargetInputId.startsWith('project-task-date-')));
                 if (isRangeInput && premCalDateMode === 'range' && premCalRangeStart && premCalRangeEnd) {
                     const input = document.getElementById(premCalTargetInputId);
                     if (input) {
@@ -27375,8 +27859,8 @@ Best,
                         input.setAttribute('data-range-start', premCalRangeStart);
                         input.setAttribute('data-range-end', premCalRangeEnd);
 
-                        // Handle task date inputs
-                        if (premCalTargetInputId && premCalTargetInputId.startsWith('task-')) {
+                        // Handle task date inputs (both old task- and new project-task-date- formats)
+                        if (premCalTargetInputId && (premCalTargetInputId.startsWith('task-') || premCalTargetInputId.startsWith('project-task-date-'))) {
                             const taskId = input.getAttribute('data-task-id');
                             if (taskId && currentPlannerId) {
                                 const p = appData.projects.find(x => x.id === currentPlannerId);
@@ -27388,6 +27872,7 @@ Best,
                                     t.startDate = '';
                                     t.dueDate = '';
                                     saveData();
+                                    renderPlannerTasks(); // Re-render to update display
                                 }
                             }
                             updateTaskDateDisplay(input);
@@ -27570,7 +28055,7 @@ Best,
             }
 
             // Handle range mode for myDeskDueDate, broadcastDueDate, newProjDue, and task date inputs
-            if (premCalDateMode === 'range' && (premCalTargetInputId === 'myDeskDueDate' || premCalTargetInputId === 'broadcastDueDate' || premCalTargetInputId === 'newProjDue' || (premCalTargetInputId && premCalTargetInputId.startsWith('task-')))) {
+            if (premCalDateMode === 'range' && (premCalTargetInputId === 'myDeskDueDate' || premCalTargetInputId === 'broadcastDueDate' || premCalTargetInputId === 'newProjDue' || (premCalTargetInputId && (premCalTargetInputId.startsWith('task-') || premCalTargetInputId.startsWith('project-task-date-'))))) {
                 if (!premCalRangeStart) {
                     // First click: Set start date
                     premCalRangeStart = dateStr;
@@ -27604,8 +28089,8 @@ Best,
             input.removeAttribute('data-range-start');
             input.removeAttribute('data-range-end');
 
-            // Handle task date inputs
-            if (premCalTargetInputId && premCalTargetInputId.startsWith('task-')) {
+            // Handle task date inputs (including project-task-date-)
+            if (premCalTargetInputId && (premCalTargetInputId.startsWith('task-') || premCalTargetInputId.startsWith('project-task-date-'))) {
                 const taskId = input.getAttribute('data-task-id');
                 if (taskId && currentPlannerId) {
                     const p = appData.projects.find(x => x.id === currentPlannerId);
@@ -27617,6 +28102,7 @@ Best,
                         t.startDate = '';
                         t.dueDate = '';
                         saveData();
+                        if (premCalTargetInputId.startsWith('project-task-date-')) renderPlannerTasks();
                     }
                 }
                 updateTaskDateDisplay(input);
@@ -27664,8 +28150,8 @@ Best,
                 input.setAttribute('data-range-start', premCalRangeStart);
                 input.setAttribute('data-range-end', premCalRangeEnd);
 
-                // Handle task date inputs
-                if (premCalTargetInputId && premCalTargetInputId.startsWith('task-')) {
+                // Handle task date inputs (including project-task-date-)
+                if (premCalTargetInputId && (premCalTargetInputId.startsWith('task-') || premCalTargetInputId.startsWith('project-task-date-'))) {
                     const taskId = input.getAttribute('data-task-id');
                     if (taskId && currentPlannerId) {
                         const p = appData.projects.find(x => x.id === currentPlannerId);
@@ -27677,6 +28163,7 @@ Best,
                             t.startDate = '';
                             t.dueDate = '';
                             saveData();
+                            if (premCalTargetInputId.startsWith('project-task-date-')) renderPlannerTasks();
                         }
                     }
                     updateTaskDateDisplay(input);
@@ -27707,7 +28194,7 @@ Best,
             const confirmBtn = document.getElementById('premCalConfirmRange');
             if (confirmBtn) {
                 // Show confirm button only when both dates are selected in range mode
-                const isRangeInput = premCalTargetInputId === 'myDeskDueDate' || premCalTargetInputId === 'broadcastDueDate' || premCalTargetInputId === 'newProjDue' || (premCalTargetInputId && premCalTargetInputId.startsWith('task-'));
+                const isRangeInput = premCalTargetInputId === 'myDeskDueDate' || premCalTargetInputId === 'broadcastDueDate' || premCalTargetInputId === 'newProjDue' || (premCalTargetInputId && (premCalTargetInputId.startsWith('task-') || premCalTargetInputId.startsWith('project-task-date-')));
                 if (isRangeInput && premCalDateMode === 'range' && premCalRangeStart && premCalRangeEnd) {
                     confirmBtn.classList.remove('hidden');
                 } else {
@@ -27725,7 +28212,7 @@ Best,
             const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
             // In range mode, quick dates set the start date
-            const isRangeInput = premCalTargetInputId === 'myDeskDueDate' || premCalTargetInputId === 'broadcastDueDate' || premCalTargetInputId === 'newProjDue' || (premCalTargetInputId && premCalTargetInputId.startsWith('task-'));
+            const isRangeInput = premCalTargetInputId === 'myDeskDueDate' || premCalTargetInputId === 'broadcastDueDate' || premCalTargetInputId === 'newProjDue' || (premCalTargetInputId && (premCalTargetInputId.startsWith('task-') || premCalTargetInputId.startsWith('project-task-date-')));
             if (isRangeInput && premCalDateMode === 'range') {
                 premCalRangeStart = dateStr;
                 premCalRangeEnd = null;
@@ -29201,39 +29688,45 @@ Best,
         <div onclick="openProjectPlanner('${p.id}')" class="project-card-linear group">
             <div class="p-5">
                 <!-- Header: Icon + Title -->
-                <div class="flex items-start gap-4 mb-4">
+                <div class="flex items-start gap-3 mb-3">
                     <div class="project-icon-gradient theme-${theme} flex-shrink-0">
                         ${iconSvg}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-0.5">${p.area}</span>
-                        <h3 class="text-base font-bold text-slate-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">${p.title}</h3>
+                        <span class="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 rounded mb-1.5">${p.area}</span>
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white leading-tight">${p.title}</h3>
+                    </div>
+                </div>
+                
+                <!-- Progress Section -->
+                <div class="mb-3">
+                    <div class="flex items-center justify-between text-xs mb-1.5">
+                        <span class="font-medium text-slate-500 dark:text-slate-400">Progress</span>
+                        <span class="font-bold ${percent === 100 ? 'text-green-600 dark:text-green-400' : 'text-slate-700 dark:text-slate-300'}">${percent}%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full transition-all duration-300 ${percent === 100 ? 'bg-green-500' : 'bg-indigo-500'}" style="width: ${percent}%"></div>
                     </div>
                 </div>
                 
                 <!-- Stats Row -->
-                <div class="flex items-center justify-between text-xs">
-                    <div class="flex items-center gap-3">
-                        <span class="font-semibold text-slate-500 dark:text-slate-400">
-                            <span class="text-slate-700 dark:text-slate-200 font-bold">${done}</span>/${total} tasks
-                        </span>
-                        ${(p.dueDateStart && p.dueDateEnd) || p.dueDate ? `
-                        <span class="flex items-center gap-1 text-slate-400 dark:text-slate-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            ${p.dueDateStart && p.dueDateEnd ? formatDateRange(p.dueDateStart, p.dueDateEnd) : (p.dueDate ? formatDateShort(p.dueDate) : '')}
-                        </span>` : ''}
+                <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                    <div class="flex items-center gap-1.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                        <span class="font-medium"><span class="font-bold text-slate-700 dark:text-slate-200">${done}</span> of ${total} tasks</span>
                     </div>
-                    <span class="font-bold ${percent === 100 ? 'text-green-600 dark:text-green-400' : 'text-slate-600 dark:text-slate-300'}">${percent}%</span>
+                    ${(p.dueDateStart && p.dueDateEnd) || p.dueDate ? `
+                    <div class="flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span class="font-medium">${p.dueDateStart && p.dueDateEnd ? formatDateRange(p.dueDateStart, p.dueDateEnd) : (p.dueDate ? formatDateShort(p.dueDate) : '')}</span>
+                    </div>` : ''}
                 </div>
                 
                 ${total === 0 ? `<p class="mt-3 text-xs text-slate-400 dark:text-slate-500 italic">No tasks yet. Click to start planning.</p>` : ''}
-            </div>
-            
-            <!-- Ultra-thin progress bar at bottom edge -->
-            <div class="progress-bar-thin">
-                <div class="fill ${progressClass}" style="width: ${percent}%"></div>
             </div>
         </div>`;
 
@@ -29558,19 +30051,17 @@ Best,
 
                     const eventId = `task-${taskId}`;
                     bodyHtml += `
-                        <div class="timeline-bar flex items-center px-2.5 rounded-full border shadow-sm cursor-move hover:brightness-95 hover:scale-[1.02] hover:shadow-md transition-all select-none truncate ${opacity} z-20 relative"
+                        <div class="timeline-bar flex items-center px-2.5 rounded-full border shadow-sm cursor-pointer hover:shadow-md transition-all select-none truncate ${opacity} z-20 relative"
                              data-event-id="${eventId}"
                              data-id="${taskId}"
-                             data-start="${t._origS || ''}"
-                             data-end="${t._origD || ''}"
-                             data-duration="${duration}"
                              data-project-id="${proj.id || ''}"
-                             onmousedown="if (!event.target.closest('.timeline-handle-left') && !event.target.closest('.timeline-handle-right')) { timelineStartDrag(event, '${eventId}', 'move'); }"
+                             onclick="${clickHandler}"
+                             title="${taskTitle} (${duration} day${duration > 1 ? 's' : ''})"
                              style="
                                 grid-column: ${colStart} / span ${safeSpan};
-                                grid-row: 1; /* Force into the main track */
-                                margin-top: ${marginTop}px; /* Vertical Stacking */
-                                height: 26px;
+                                grid-row: 1;
+                                margin-top: ${marginTop}px;
+                                height: 28px;
                                 background-color: ${bgColor}; 
                                 border-color: ${borderColor};
                                 color: ${pColor};
@@ -29578,11 +30069,9 @@ Best,
                                 font-weight: 600;
                                 margin-left: 2px; 
                                 margin-right: 2px;
-                                align-self: start; /* Don't stretch height, just width */
+                                align-self: start;
                              ">
-                            <div class="timeline-handle-left" onmousedown="event.stopPropagation(); timelineStartDrag(event, '${eventId}', 'resize-start')"></div>
-                            <span class="truncate w-full pointer-events-none z-0">${taskTitle}</span>
-                            <div class="timeline-handle-right" onmousedown="event.stopPropagation(); timelineStartDrag(event, '${eventId}', 'resize-end')"></div>
+                            <span class="truncate w-full">${taskTitle}</span>
                         </div>
                     `;
                 });
@@ -29592,7 +30081,18 @@ Best,
 
             body.innerHTML = bodyHtml;
 
-            // Timeline bars are now handled by timelineStartDrag, timelineHandleDrag, timelineEndDrag
+            // Show empty state if no projects have tasks with dates
+            if (bodyHtml.trim() === '') {
+                body.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-64 text-center p-8">
+                        <svg class="w-16 h-16 text-slate-300 dark:text-slate-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium mb-2">No tasks with dates yet</p>
+                        <p class="text-sm text-slate-400 dark:text-slate-500">Add due dates to your project tasks to see them on the timeline</p>
+                    </div>
+                `;
+            }
         }
 
         /* ---------------------------------------------------------
@@ -30482,7 +30982,9 @@ Best,
             });
 
             const list = document.getElementById('plannerTaskList');
+            const completedList = document.getElementById('plannerCompletedList');
             list.innerHTML = '';
+            if (completedList) completedList.innerHTML = '';
 
             // Update Progress Header
             const total = tasks.length;
@@ -30507,189 +31009,175 @@ Best,
                 progressRing.style.strokeDashoffset = offset;
             }
 
-            // Cleanup old UI elements if they exist
-            const oldCompList = document.getElementById('plannerCompletedList');
-            if (oldCompList) oldCompList.innerHTML = '';
+            // Update completed count
+            const completedCountEl = document.getElementById('plannerCompletedCount');
+            if (completedCountEl) {
+                completedCountEl.textContent = doneCount === 0 ? 'No completed tasks' : `Show ${doneCount} Completed`;
+            }
 
-            tasks.forEach(t => {
-                const isDone = t.status === 'done';
+            // Separate active and completed tasks
+            const activeTasks = tasks.filter(t => t.status !== 'done');
+            const completedTasks = tasks.filter(t => t.status === 'done');
 
-                // Status Config
-                const statusConfig = {
-                    'todo': { label: 'To Do', class: 'status-todo', icon: '○' },
-                    'doing': { label: 'In Progress', class: 'status-doing', icon: '◑' },
-                    'blocked': { label: 'Blocked', class: 'status-blocked', icon: '✋' },
-                    'done': { label: 'Done', class: 'status-done', icon: '✓' }
-                };
-                const s = statusConfig[t.status] || statusConfig['todo'];
+            // Render active tasks
+            activeTasks.forEach(t => {
+                const isDone = false;
 
-                // Metadata Badges
-                let metaHtml = '';
-                if (t.priority === 'High') metaHtml += `<span class="meta-badge high mr-2">High</span>`;
-
-                // Date Display with Premium Picker
-                // Support both new format (dueDateStart/dueDateEnd) and legacy (startDate/dueDate)
-                const dueDateStart = t.dueDateStart || (t.startDate ? t.startDate : '');
-                const dueDateEnd = t.dueDateEnd || (t.dueDate ? t.dueDate : '');
-                const taskDateInputId = `task-date-${t.id}`;
-
-                metaHtml += `
-                <div class="relative w-36 flex-shrink-0">
-                    <div class="relative group w-full">
-                        <input type="text" id="${taskDateInputId}" readonly
-                            class="absolute inset-0 w-full h-full opacity-0 z-30 cursor-pointer appearance-none"
-                            onclick="openPremiumCalendar(event, '${taskDateInputId}')"
-                            data-task-id="${t.id}"
-                            ${dueDateEnd ? `value="${dueDateEnd}"` : ''}
-                            ${dueDateStart && dueDateEnd ? `data-range-start="${dueDateStart}" data-range-end="${dueDateEnd}"` : ''}>
-
-                        <div id="task-date-empty-${t.id}" class="${dueDateStart || dueDateEnd ? 'hidden' : ''} flex items-center justify-center w-full py-1 px-2 rounded border border-dashed border-slate-300 text-slate-400 bg-slate-50 dark:bg-slate-800 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:border-slate-400 group-hover:text-slate-600 transition-all">
-                            <div class="flex items-center gap-1.5">
-                                <svg class="w-3.5 h-3.5 group-hover:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <svg class="w-3.5 h-3.5 hidden group-hover:block text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11v6m-3-3h6" /></svg>
-                                <span class="text-xs font-medium group-hover:text-indigo-600">Set Date</span>
-                            </div>
-                        </div>
-
-                        <div id="task-date-filled-${t.id}" class="${dueDateStart || dueDateEnd ? '' : 'hidden'} flex items-center justify-between w-full py-1 px-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm">
-                            <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <span id="task-date-text-${t.id}" class="text-xs font-bold truncate"></span>
-                            </div>
-                            <button type="button" onclick="clearTaskDate(event, '${taskDateInputId}')"
-                                class="relative z-40 text-slate-400 hover:text-red-500 p-0.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"><svg
-                                    xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg></button>
-                        </div>
-                    </div>
-                </div>
-                `;
-
-                // Render Row
-                // FIX: Slider CSS updated to include a visual thumb and larger hit area
+                // Support date ranges like My Desk
+                const dueDateStart = t.dueDateStart || '';
+                const dueDateEnd = t.dueDateEnd || t.dueDate || '';
+                const hasDateRange = dueDateStart && dueDateEnd;
+                const hasSingleDate = !dueDateStart && dueDateEnd;
+                const taskDateInputId = `project-task-date-${t.id}`;
+                
+                // Simple checkbox-based task row
                 const itemHTML = `
-        <div class="task-row group border-b border-slate-100 dark:border-slate-800/50 last:border-0 ${isDone ? 'opacity-60' : ''}" id="task-row-${t.id}">
+        <div class="task-row group border-b border-slate-100 dark:border-slate-800/50 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors" id="task-row-${t.id}" oncontextmenu="showProjectTaskContextMenu(event, '${t.id}'); return false;">
             <div class="flex items-center gap-3 p-3">
-                <button onclick="cycleTaskStatus('${t.id}', this)" class="status-pill ${s.class} flex-shrink-0 w-28 justify-center" title="Click to cycle status">
-                    <span>${s.icon}</span> ${s.label}
+                <!-- Simple Checkbox -->
+                <button onclick="toggleSimpleTaskStatus('${t.id}')" class="flex-shrink-0 w-5 h-5 rounded border-2 ${isDone ? 'bg-green-500 border-green-500' : 'border-slate-300 dark:border-slate-600 hover:border-indigo-500'} flex items-center justify-center transition-all">
+                    ${isDone ? '<svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>' : ''}
                 </button>
                 
-                <div class="flex-1 min-w-0 relative">
-                    <div class="flex items-center justify-between mb-1">
-                        <input type="text" 
-                            value="${escapeHtml(t.text)}" 
-                            oninput="updateTaskTextMemory('${t.id}', this.value)" 
-                            onblur="saveData()" 
-                            onkeydown="handleTaskInputKey(event, '${t.id}')"
-                            class="w-full bg-transparent border-none p-0 text-sm font-medium ${isDone ? 'line-through text-slate-400' : 'text-slate-700 dark:text-slate-200'} focus:ring-0 placeholder-slate-300" 
-                            placeholder="Task name...">
-                        <span class="text-[10px] font-mono text-slate-400 ml-2 progress-text">${t.progress}%</span>
-                    </div>
+                <!-- Task Text (Read-only) -->
+                <div class="flex-1 min-w-0">
+                    <span class="text-sm font-medium ${isDone ? 'line-through text-slate-400' : 'text-slate-700 dark:text-slate-200'}">${escapeHtml(t.text) || 'Untitled Task'}</span>
+                </div>
+
+                <!-- Due Date with Calendar Picker -->
+                <div class="relative flex-shrink-0">
+                    <input type="text" id="${taskDateInputId}" readonly
+                        class="absolute inset-0 w-full h-full opacity-0 z-30 cursor-pointer"
+                        onclick="openPremiumCalendar(event, '${taskDateInputId}')"
+                        data-task-id="${t.id}"
+                        data-is-project-task="true"
+                        ${dueDateEnd ? `value="${dueDateEnd}"` : ''}
+                        ${hasDateRange ? `data-range-start="${dueDateStart}" data-range-end="${dueDateEnd}"` : ''}>
                     
-                    <!-- Mini Progress Slider (Single Input with Gradient) -->
-                    <div class="relative flex items-center w-full h-5 mt-1">
-                        <input type="range" min="0" max="100" step="5" value="${t.progress}" 
-                            oninput="updateTaskProgress('${t.id}', this.value)"
-                            class="custom-range-slider"
-                            id="slider-${t.id}"
-                            style="background: linear-gradient(to right, #6366f1 0%, #6366f1 ${t.progress}%, #e2e8f0 ${t.progress}%, #e2e8f0 100%);">
-                    </div>
+                    ${!dueDateStart && !dueDateEnd ? `
+                    <div id="task-date-empty-${t.id}" class="flex items-center gap-1.5 px-2 py-1 rounded border border-dashed border-slate-300 dark:border-slate-600 text-slate-400 hover:border-indigo-400 hover:text-indigo-500 transition-all cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span class="text-xs font-medium">Set Date</span>
+                    </div>` : `
+                    <div id="task-date-filled-${t.id}" class="flex items-center gap-1.5 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-600 dark:text-slate-300 cursor-pointer hover:border-indigo-400 transition-all">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span id="task-date-text-${t.id}" class="font-medium"></span>
+                    </div>`}
                 </div>
 
-                <div class="flex items-center">
-                    ${metaHtml}
-                </div>
-
-                <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button onclick="toggleProjectTaskNote('${t.id}')" class="p-1.5 ${t.notes ? 'text-slate-400 hover:text-hub-600' : 'text-slate-200 cursor-default'}" title="${t.notes ? 'View Notes' : 'No Notes'}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    </button>
-                    <button onclick="toggleTaskDetails('${t.id}')" class="p-1.5 text-slate-400 hover:text-indigo-500 rounded hover:bg-indigo-50 dark:hover:bg-indigo-900/20" title="Edit Details">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-                    </button>
-                    <button onclick="pushTaskToDesk('${t.id}')" class="p-1.5 ${t.pushedToDesk ? 'text-green-500' : 'text-slate-300 hover:text-indigo-500'}" title="${t.pushedToDesk ? 'On Desk' : 'Push to My Desk'}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                    </button>
-                    <button onclick="deleteProjectTask('${t.id}')" class="p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
-                </div>
+                <!-- Notes Icon (visible if task has notes) -->
+                ${t.notes ? `
+                <button onclick="toggleProjectTaskNote('${t.id}')" class="p-1.5 text-slate-400 hover:text-indigo-500 rounded hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors" title="View Notes">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </button>` : ''}
             </div>
             
-            <!-- View Only Notes (Hidden by default) -->
-            <div id="project-note-${t.id}" class="hidden bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-xs text-slate-600 dark:text-slate-400 mt-0 mb-3 mx-3 ml-[120px] border border-slate-100 dark:border-slate-700/50">
-                ${renderNoteContent(t.notes)}
-            </div>
-
-            <div class="task-details px-3 pb-3" id="details-${t.id}">
-                <div class="pl-[120px]">
-                    <div class="grid grid-cols-2 gap-4 mb-3">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase">Priority</label>
-                            <select onchange="updateTaskMeta('${t.id}', 'priority', this.value)" class="w-full text-xs bg-slate-100 dark:bg-slate-700 border-none rounded px-2 py-1 mt-1 text-slate-700 dark:text-slate-200">
-                                <option value="Normal" ${t.priority === 'Normal' ? 'selected' : ''}>Normal</option>
-                                <option value="High" ${t.priority === 'High' ? 'selected' : ''}>High 🔥</option>
-                                <option value="Low" ${t.priority === 'Low' ? 'selected' : ''}>Low</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase">Due Date</label>
-                            <div class="relative group w-full mt-1">
-                                <input type="text" id="task-detail-date-${t.id}" readonly
-                                    class="absolute inset-0 w-full h-full opacity-0 z-30 cursor-pointer appearance-none"
-                                    onclick="openPremiumCalendar(event, 'task-detail-date-${t.id}')"
-                                    data-task-id="${t.id}"
-                                    ${dueDateEnd ? `value="${dueDateEnd}"` : ''}
-                                    ${dueDateStart && dueDateEnd ? `data-range-start="${dueDateStart}" data-range-end="${dueDateEnd}"` : ''}>
-
-                                <div id="task-detail-date-empty-${t.id}" class="${dueDateStart || dueDateEnd ? 'hidden' : ''} flex items-center justify-center w-full py-1 px-2 rounded border border-dashed border-slate-300 text-slate-400 bg-slate-100 dark:bg-slate-700 group-hover:bg-white dark:group-hover:bg-slate-600 group-hover:border-slate-400 group-hover:text-slate-600 transition-all">
-                                    <div class="flex items-center gap-1.5">
-                                        <svg class="w-3 h-3 group-hover:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                        <svg class="w-3 h-3 hidden group-hover:block text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11v6m-3-3h6" /></svg>
-                                        <span class="text-xs font-medium group-hover:text-indigo-600">Set Date</span>
-                                    </div>
-                                </div>
-
-                                <div id="task-detail-date-filled-${t.id}" class="${dueDateStart || dueDateEnd ? '' : 'hidden'} flex items-center justify-between w-full py-1 px-2 rounded border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 shadow-sm">
-                                    <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                                        <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                        <span id="task-detail-date-text-${t.id}" class="text-xs font-bold"></span>
-                                    </div>
-                                    <button type="button" onclick="clearTaskDate(event, 'task-detail-date-${t.id}')"
-                                        class="relative z-40 text-slate-400 hover:text-red-500 p-0.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"><svg
-                                            xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <textarea onblur="updateTaskMeta('${t.id}', 'notes', this.value)" 
-                        class="w-full text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-slate-600 dark:text-slate-300 resize-none h-20 focus:ring-1 focus:ring-indigo-500" 
-                        placeholder="Add extra notes, links, or context...">${t.notes || ''}</textarea>
+            <!-- Notes Display (hidden by default) -->
+            ${t.notes ? `
+            <div id="project-task-note-${t.id}" class="hidden px-3 pb-3">
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 text-xs text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                    ${escapeHtml(t.notes).replace(/\n/g, '<br>')}
                 </div>
-            </div>
+            </div>` : ''}
         </div>`;
 
                 list.innerHTML += itemHTML;
+                
+                // Update date display after rendering
+                setTimeout(() => {
+                    const input = document.getElementById(taskDateInputId);
+                    if (input) updateTaskDateDisplay(input);
+                }, 0);
+            });
 
-                // Update task date displays after rendering
-                const taskDateInput = document.getElementById(taskDateInputId);
-                if (taskDateInput) {
-                    updateTaskDateDisplay(taskDateInput);
-                }
-                const taskDetailDateInput = document.getElementById(`task-detail-date-${t.id}`);
-                if (taskDetailDateInput) {
-                    updateTaskDateDisplay(taskDetailDateInput);
+            // Show empty state if no active tasks
+            if (activeTasks.length === 0) {
+                list.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-8 text-center">
+                        <svg class="w-12 h-12 text-slate-300 dark:text-slate-600 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium mb-1">No tasks yet</p>
+                        <p class="text-sm text-slate-400 dark:text-slate-500">Use the quick add below to create your first task</p>
+                    </div>
+                `;
+            }
+
+            // Render completed tasks separately
+            completedTasks.forEach(t => {
+                const isDone = true;
+                const dueDateStart = t.dueDateStart || '';
+                const dueDateEnd = t.dueDateEnd || t.dueDate || '';
+                const taskDateInputId = `project-task-date-${t.id}`;
+                
+                const itemHTML = `
+        <div class="task-row group border-b border-slate-100 dark:border-slate-800/50 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors opacity-60" id="task-row-${t.id}">
+            <div class="flex items-center gap-3 p-3">
+                <!-- Simple Checkbox -->
+                <button onclick="toggleSimpleTaskStatus('${t.id}')" class="flex-shrink-0 w-5 h-5 rounded border-2 bg-green-500 border-green-500 flex items-center justify-center transition-all">
+                    <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                </button>
+                
+                <!-- Task Text (Read-only) -->
+                <div class="flex-1 min-w-0">
+                    <span class="text-sm font-medium line-through text-slate-400">${escapeHtml(t.text) || 'Untitled Task'}</span>
+                </div>
+
+                <!-- Due Date Display -->
+                ${dueDateEnd ? `
+                <div class="flex items-center gap-1.5 px-2 py-1 text-xs text-slate-400">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="font-medium">${dueDateStart && dueDateStart !== dueDateEnd ? formatDateRange(dueDateStart, dueDateEnd) : formatDateShort(dueDateEnd)}</span>
+                </div>` : ''}
+
+                <!-- Notes Icon (visible if task has notes) -->
+                ${t.notes ? `
+                <button onclick="toggleProjectTaskNote('${t.id}')" class="p-1.5 text-slate-400 hover:text-indigo-500 rounded hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors" title="View Notes">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </button>` : ''}
+            </div>
+            
+            <!-- Notes Display (hidden by default) -->
+            ${t.notes ? `
+            <div id="project-task-note-${t.id}" class="hidden px-3 pb-3">
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 text-xs text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                    ${escapeHtml(t.notes).replace(/\n/g, '<br>')}
+                </div>
+            </div>` : ''}
+            </div>
+        </div>`;
+
+                if (completedList) {
+                    completedList.innerHTML += itemHTML;
                 }
             });
+
+            // Initialize drag and drop for task reordering
+            if (list && typeof Sortable !== 'undefined') {
+                new Sortable(list, {
+                    animation: 150,
+                    handle: '.task-row',
+                    ghostClass: 'sortable-ghost',
+                    onEnd: function(evt) {
+                        // Reorder tasks in data
+                        const p = appData.projects.find(x => x.id === currentPlannerId);
+                        const movedTask = p.tasks[evt.oldIndex];
+                        p.tasks.splice(evt.oldIndex, 1);
+                        p.tasks.splice(evt.newIndex, 0, movedTask);
+                        saveData();
+                    }
+                });
+            }
         }
 
         // --- Task Date Helpers ---
@@ -30707,7 +31195,9 @@ Best,
             const filledState = document.getElementById(`${prefix}-filled-${taskId}`);
             const textSpan = document.getElementById(`${prefix}-text-${taskId}`);
 
-            if (!emptyState || !filledState || !textSpan) return;
+            // Project task rows only render one of empty/filled; need at least textSpan to show a date
+            if (!textSpan) return;
+            if (!emptyState && !filledState) return;
 
             // Check for range dates
             const rangeStart = input.getAttribute('data-range-start');
@@ -30715,19 +31205,23 @@ Best,
 
             if (rangeStart && rangeEnd) {
                 // Range date: use formatDateRange
-                emptyState.classList.add('hidden');
-                filledState.classList.remove('hidden');
-                textSpan.textContent = formatDateRange(rangeStart, rangeEnd);
+                if (emptyState) emptyState.classList.add('hidden');
+                if (filledState) {
+                    filledState.classList.remove('hidden');
+                    textSpan.textContent = formatDateRange(rangeStart, rangeEnd);
+                }
             } else if (input.value) {
                 // Single date: format as before
-                emptyState.classList.add('hidden');
-                filledState.classList.remove('hidden');
-                const d = new Date(input.value + 'T12:00:00');
-                const m = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                textSpan.textContent = m;
+                if (emptyState) emptyState.classList.add('hidden');
+                if (filledState) {
+                    filledState.classList.remove('hidden');
+                    const d = new Date(input.value + 'T12:00:00');
+                    const m = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    textSpan.textContent = m;
+                }
             } else {
-                emptyState.classList.remove('hidden');
-                filledState.classList.add('hidden');
+                if (emptyState) emptyState.classList.remove('hidden');
+                if (filledState) filledState.classList.add('hidden');
                 textSpan.textContent = '';
             }
         }
@@ -30812,6 +31306,199 @@ Best,
                     if (text) text.textContent = `${value}%`;
                 }
                 saveData();
+            }
+        }
+
+        // Toggle completed tasks visibility
+        function togglePlannerCompleted() {
+            const completedList = document.getElementById('plannerCompletedList');
+            if (completedList) {
+                completedList.classList.toggle('hidden');
+            }
+        }
+
+        // Project Task Context Menu
+        let contextMenuTaskId = null;
+
+        function showProjectTaskContextMenu(event, taskId) {
+            event.preventDefault();
+            contextMenuTaskId = taskId;
+            
+            const menu = document.getElementById('projectTaskContextMenu');
+            menu.style.display = 'block';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', hideProjectTaskContextMenu);
+            }, 0);
+        }
+
+        function hideProjectTaskContextMenu() {
+            const menu = document.getElementById('projectTaskContextMenu');
+            menu.style.display = 'none';
+            document.removeEventListener('click', hideProjectTaskContextMenu);
+            contextMenuTaskId = null;
+        }
+
+        function projectTaskContextAction(action) {
+            if (!contextMenuTaskId) return;
+            
+            // Save taskId before hiding menu (which sets contextMenuTaskId to null)
+            const taskId = contextMenuTaskId;
+            hideProjectTaskContextMenu();
+            
+            if (action === 'edit') {
+                openProjectTaskEditModal(taskId);
+            } else if (action === 'moveToDesk') {
+                moveProjectTaskToDesk(taskId);
+            } else if (action === 'delete') {
+                deleteProjectTask(taskId);
+            }
+        }
+
+        // Project Task Edit Modal
+        let editingTaskId = null;
+
+        function openProjectTaskEditModal(taskId) {
+            if (!currentPlannerId) return;
+            
+            const p = appData.projects.find(x => x.id === currentPlannerId);
+            if (!p) return;
+            
+            const task = p.tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            editingTaskId = taskId;
+            document.getElementById('projectTaskEditTitle').value = task.text || '';
+            document.getElementById('projectTaskEditNotes').value = task.notes || '';
+            
+            // Show notes section if task has notes
+            if (task.notes) {
+                document.getElementById('projectTaskEditNotesContainer').classList.remove('hidden');
+                document.getElementById('projectTaskEditNotesIcon').classList.add('rotate-90');
+            } else {
+                document.getElementById('projectTaskEditNotesContainer').classList.add('hidden');
+                document.getElementById('projectTaskEditNotesIcon').classList.remove('rotate-90');
+            }
+            
+            toggleModal('projectTaskEditModal');
+        }
+
+        function closeProjectTaskEditModal() {
+            toggleModal('projectTaskEditModal');
+            editingTaskId = null;
+        }
+
+        function saveProjectTaskEdit() {
+            if (!currentPlannerId || !editingTaskId) return;
+            
+            const p = appData.projects.find(x => x.id === currentPlannerId);
+            if (!p) return;
+            
+            const task = p.tasks.find(t => t.id === editingTaskId);
+            if (!task) return;
+            
+            task.text = document.getElementById('projectTaskEditTitle').value || 'Untitled Task';
+            task.notes = document.getElementById('projectTaskEditNotes').value || '';
+            
+            saveData();
+            renderPlannerTasks();
+            closeProjectTaskEditModal();
+            showToast('Task updated', 'success');
+        }
+
+        function toggleProjectTaskEditNotes() {
+            const container = document.getElementById('projectTaskEditNotesContainer');
+            const icon = document.getElementById('projectTaskEditNotesIcon');
+            container.classList.toggle('hidden');
+            icon.classList.toggle('rotate-90');
+        }
+
+        function toggleProjectTaskNote(taskId) {
+            const noteDiv = document.getElementById(`project-task-note-${taskId}`);
+            if (noteDiv) noteDiv.classList.toggle('hidden');
+        }
+
+        // Move project task to My Desk
+        function moveProjectTaskToDesk(taskId) {
+            if (!currentPlannerId) return;
+            
+            const p = appData.projects.find(x => x.id === currentPlannerId);
+            if (!p) return;
+            
+            const task = p.tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            // Create new My Desk entry (My Desk uses title, status: AtHand|OnTheTable|InDrawer)
+            const newEntry = {
+                id: `desk_${Date.now()}`,
+                title: task.text || 'Untitled Task',
+                category: 'Project',
+                status: 'OnTheTable',
+                sortOrder: 0,
+                dueDateStart: task.dueDateStart || '',
+                dueDateEnd: task.dueDateEnd || task.dueDate || '',
+                notes: task.notes || '',
+                scheduledTime: '',
+                estimatedMinutes: null,
+                sourceId: null
+            };
+            
+            if (!appData.myDesk) appData.myDesk = [];
+            appData.myDesk.push(newEntry);
+            saveData();
+            
+            showToast('Task copied to My Desk', 'success');
+            
+            if (typeof renderMyDesk === 'function') renderMyDesk();
+        }
+
+        // Simple toggle for checkbox-based task status
+        function toggleSimpleTaskStatus(taskId) {
+            if (!currentPlannerId) return;
+            const p = appData.projects.find(x => x.id === currentPlannerId);
+            const t = p.tasks.find(x => x.id === taskId);
+            if (t) {
+                // Simple toggle: done <-> not done
+                if (t.status === 'done') {
+                    t.status = 'todo';
+                    t.progress = 0;
+                } else {
+                    t.status = 'done';
+                    t.progress = 100;
+                }
+                saveData();
+                renderPlannerTasks();
+                renderProjectsView(); // Update project card progress
+            }
+        }
+
+        // Simple date editor
+        function editTaskDate(taskId) {
+            if (!currentPlannerId) return;
+            const p = appData.projects.find(x => x.id === currentPlannerId);
+            const t = p.tasks.find(x => x.id === taskId);
+            if (t) {
+                const currentDate = t.dueDate || t.dueDateEnd || '';
+                const newDate = prompt('Set due date (YYYY-MM-DD):', currentDate);
+                if (newDate !== null) {
+                    if (newDate.trim() === '') {
+                        // Clear date
+                        t.dueDate = '';
+                        t.dueDateEnd = '';
+                        t.dueDateStart = '';
+                    } else {
+                        // Set new date
+                        t.dueDate = newDate;
+                        t.dueDateEnd = newDate;
+                        t.dueDateStart = '';
+                    }
+                    saveData();
+                    renderPlannerTasks();
+                    renderTimeline(); // Update timeline if visible
+                }
             }
         }
 
@@ -31109,13 +31796,6 @@ Best,
             if (inList) result += '</ul>';
 
             return result;
-        }
-
-        function toggleProjectTaskNote(taskId) {
-            const noteDiv = document.getElementById(`project-note-${taskId}`);
-            if (noteDiv) {
-                noteDiv.classList.toggle('hidden');
-            }
         }
 
         // ==========================================
