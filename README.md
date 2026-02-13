@@ -1,10 +1,10 @@
 # leadershiop-os
-**Leadership OS** is a local-first, privacy-centric workspace designed for high-speed leadership. It consolidates daily tasks, team reliability tracking, and AI-assisted drafting into a single, secure "cockpit."
+**Leadership OS** is a local-first, privacy-centric workspace designed for high-speed leadership. It consolidates daily tasks, team reliability tracking, and AI-assisted drafting into a single, secure "cockpit." Data is stored locally with optional cloud sync for cross-device backup.
 
 
 # 🚀 Leadership OS 
 
-**Leadership OS** is a local-first, privacy-centric workspace designed for high-speed leadership. It consolidates daily tasks, team reliability tracking, and AI-assisted drafting into a single, secure "cockpit."
+**Leadership OS** is a local-first, privacy-centric workspace designed for high-speed leadership. It consolidates daily tasks, team reliability tracking, and AI-assisted drafting into a single, secure "cockpit." Data is stored locally with optional cloud sync for cross-device backup.
 
 
 
@@ -16,7 +16,9 @@
 - **📊 Reliability Matrix:** A visual heatmap for team accountability and attendance tracking.
 - **🌙 Snooze & Boomerang:** Right-click tasks to hide them until you are ready to follow up.
 - **⌨️ Command Palette:** Use `Ctrl + K` to navigate the entire app without a mouse.
-- **🛡️ Local-First & Private:** All data is stored in your browser's `localStorage`. No cloud sync, no data leaks.
+- **🛡️ Local-First with Cloud Sync:** Data is stored locally in your browser and optionally synced to the cloud. Work offline and sync when connected.
+- **👤 Team Avatars:** Add profile avatars to team member information for a personalized roster view.
+- **🔔 Project Task Notifications:** Get notified when project tasks are due—scheduled reminders right in My Desk.
 
 ---
 
@@ -24,7 +26,7 @@
 
 - **Frontend:** HTML5, Vanilla JavaScript, Tailwind CSS (via CDN)
 - **Icons:** Lucide Icons
-- **Storage:** Browser LocalStorage (Offline persistent)
+- **Storage:** Browser LocalStorage + Cloud Sync (Supabase) for cross-device backup
 - **AI Integration:** Google Gemini API (Optional)
 
 ---
@@ -45,9 +47,9 @@
 ## 🔒 Privacy & Security
 
 Leadership OS is built with a **Security-First** philosophy.
-- **No Backend:** There is no database or server tracking your actions.
-- **Data Ownership:** You own 100% of your data. Clearing your browser cache or deleting the local file is the only way data is removed.
-- **Air-Gapped Ready:** The core task and tracking features work without an internet connection.
+- **Local-First:** Your data lives in your browser first. Cloud sync is optional and under your control.
+- **Data Ownership:** You own your data. When using cloud sync, it is stored in your own Supabase project.
+- **Offline-Capable:** Core task and tracking features work without an internet connection; sync when you're back online.
 
 ---
 
