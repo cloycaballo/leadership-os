@@ -6,13 +6,25 @@
 
 ## Key Features
 
-- **Brain Dump:** Clear your mental RAM instantly. Type anything, convert to tasks later.
-- **Reliability Matrix:** A visual heatmap for team accountability and attendance tracking.
-- **Snooze & Boomerang:** Right-click tasks to hide them until you're ready to follow up.
-- **Command Palette:** Use `Ctrl + K` to navigate the entire app without a mouse.
-- **Local-First with Cloud Sync:** Data is stored locally in your browser and optionally synced to the cloud. Work offline and sync when connected.
-- **Team Avatars:** Add profile pictures to team members for a personalized roster view.
-- **Project Task Notifications:** Get notified when project tasks are due — scheduled reminders right in My Desk.
+**My Desk** is the personal task management board. Tasks sit in a Kanban layout with drag-and-drop columns, a calendar view for date-aware planning, and a snooze system — right-click any task to defer it and have it reappear automatically on the date you set.
+
+**Projects** groups related tasks into a named board. TLs can share project templates across the team so recurring workflows don't need to be rebuilt from scratch each time. When a project task has a due date, it automatically surfaces as a reminder in My Desk — no manual follow-up needed.
+
+**Evaluation Pipeline** is a structured tracker for team member evaluation cycles. It tracks status, sends automated reminders, and keeps a full history so nothing slips through.
+
+**Team Logbook** is where TLs log issues, kudos, requests, and general notes per team member. It supports AI-assisted parsing for free-form text entry and handles mixed Tagalog/English input. The result is a searchable record of every significant interaction.
+
+**Broadcast Tracker** handles team-wide tasks and announcements with a built-in completion tracker. Instead of chasing people down to confirm they've read or done something, the tracker shows who's done and who isn't.
+
+**Email Drafter** uses AI to help write professional emails. Paste in context, pick a tone, get a draft. Useful for routine communication that still needs to sound considered.
+
+**Brain Dump** is a scratchpad for capturing anything mid-thought — tasks, ideas, follow-ups. Highlight any text to convert it into a real task when you're ready.
+
+**Local-first storage** means data lives in your browser by default. Nothing leaves the device unless you turn on cloud sync. Safe Tier is available for teams that need cloud sync fully disabled.
+
+**Command Palette** — press Ctrl + K to get anywhere in the app without touching the mouse.
+
+**Team Avatars** let you add profile pictures to roster members for a quick visual reference.
 
 ---
 
