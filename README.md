@@ -1,4 +1,4 @@
-# leadershiop-os
+# leadership-os
 **Leadership OS** is a local-first, privacy-centric workspace designed for high-speed leadership. It consolidates daily tasks, team reliability tracking, and AI-assisted drafting into a single, secure "cockpit." Data is stored locally with optional cloud sync for cross-device backup.
 
 
@@ -38,9 +38,10 @@
 2. Open `index.html` in **Chrome** or **Edge**.
 3. (Optional) Enter your Gemini API key in the settings to enable AI features.
 
-### **Option 2: Desktop App (Portable)**
-1. Run the `Leadership OS.exe` (if using the Nativefier build).
-2. All settings and data will remain local to your machine.
+### Option 2: Install as Desktop App (PWA)
+1. Open the hosted URL in **Microsoft Edge** or **Chrome**.
+2. Click the install icon in the address bar to install as a Progressive Web App (PWA).
+3. The app will run in its own window. All data remains stored locally in the browser.
 
 ---
 
@@ -55,7 +56,6 @@ Leadership OS is built with a **Security-First** philosophy.
 
 ## 📝 Roadmap
 
-- [ ] Gemma 3 Integration for 100% Offline AI.
 - [ ] Custom Theme Engine.
 - [ ] Export to PDF/Excel for reporting.
 
@@ -63,3 +63,11 @@ Leadership OS is built with a **Security-First** philosophy.
 
 ## ⚖️ License
 Distributed under the MIT License. See `LICENSE` for more information.
+
+## 🔐 GRC & Security Notes
+
+- **Safe Tier available:** A restricted configuration that disables all cloud sync and hides sensitive data fields (PSI & Contact). Designed for compliance-sensitive deployments.
+- **No SQL injection risk:** Supabase uses parameterized queries via PostgREST. Raw SQL from user input is never executed.
+- **Row Level Security (RLS):** Enforced at the database level. Users can only access their own data.
+- **localStorage scope:** Data is sandboxed to the app's domain in the user's browser. Other tabs, sites, or users cannot access it.
+- **External API calls:** Only three services make network calls — Supabase (auth only in Safe Tier), Gemini API (user-initiated, optional), and DiceBear (avatar generation, cosmetic only).
