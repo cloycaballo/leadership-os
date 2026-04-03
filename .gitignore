@@ -1,0 +1,17 @@
+# Sensitive setup/demo files — do not re-add
+create_users.html
+SETUP_USERS_INSTRUCTIONS.md
+QUICK_START.md
+DEMO_ACCOUNT_SETUP.md
+DEMO_DATA_CHANGES.md
+DEMO_SETUP_CHECKLIST.md
+docs/SETUP_USERS_INSTRUCTIONS.md
+docs/QUICK_START.md
+docs/DEMO_ACCOUNT_SETUP.md
+docs/DEMO_DATA_CHANGES.md
+docs/DEMO_SETUP_CHECKLIST.md
+
+# Misc
+*.env
+*.env.local
+demo_account_backup.json
